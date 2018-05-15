@@ -5,14 +5,15 @@
 .header {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    align-content: left;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 
-.header-image > img {
-    width: 50%;
-    padding: 10px;
-    margin-left: 8px;
+ .header-logo >img {
+    width: 60px;
+    padding : 10px
 }
 
 body {
@@ -28,7 +29,7 @@ input[type=text], input[type=password] {
     padding: 8px;
     margin-top:8px;
     margin-bottom: 8px;
-    background-color: #fed766;
+    background-color: #eff1f3;
     border: none;
     border-bottom: 2px solid #272727;
 }
@@ -38,7 +39,7 @@ input[type=text]:focus, input[type=password]:focus {
 
 }
 button {
-    width : 20%;
+    width : 100px;
     padding: 8px;
     margin-top:8px;
     margin-bottom:8px;
@@ -50,20 +51,27 @@ button:hover {
     background-color: #272727;
 }
 
-.login-box {
-    width: 100%;
+ .login-box {
+    width: 400px;
     padding: 30px;
     border:  2px solid #272727;
+    background-color: #eff1f3;
 }
 
-.header >.nav-bar > div {
+.login-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-bar > div {
     border: 2px solid #272727;
     padding: 8px;
     margin: 8px;
     height: 40px;
 }
 
-.header >.nav-bar > div:hover {
+.nav-bar > div:hover {
     color: #eff1f3;
     background-color: #272727;
 }
@@ -73,4 +81,5 @@ button:hover {
 }
 .footer {
     margin: 8px;
+    text-align:center;
 }
