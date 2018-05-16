@@ -1,0 +1,43 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+    <link rel = "stylesheet" type = "text/css" href = "./styles/index.css">  
+    <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Maintenance-Tracker | create Maintenance/repair-request</title>
+    <meta name = "viewport" content = "width= device-width,initial-scale = 1.0"></meta>
+    <script>if (window.devicePixelRatio > 1) document.cookie = 'pixelRatio=' + window.devicePixelRatio + ';path=/;expires=Tue, 19 Jan 2038 03:14:07 GMT';</script>    
+    </head>
+    <body>
+            <div class = "nav-bar">
+                    <div>Home</div>
+                    <div>My Requests</div>
+                    <div>Sign out</div>
+                </div>
+        <div class = "header">
+                <div><h1>Maintenance Tracker</h1></div>
+                <div class = "header-logo"><img src="./images/nut.png" alt ="header-img"/></div>
+            </div>
+        
+            <div class = "request-panel">
+        <div class = "request-box">
+            <div><h2>Repair | Maintenance Form</h2></div>
+        <form class = "form-one">
+
+            <label for="title"><b>Request title</b></label>
+            <input type="text" name="title" required>
+            <select id= "requestType" name="requestType">
+                <option value= "0">Select Request Type</option>
+                <option value= "1">Repair</option>
+                <option value= "2">Maintenance</option>
+            </select>
+            <div class = "spacing">
+            <label for="requestDescription"><b>Brief Description of fault</b></label>
+            <textarea required></textarea>
+            <button type="submit"> Update Request</button>
+            </div>
+        </form>
+    </div>
+            </div>
+    <div class = "footer"> &copy 2018 Maintenance-Tracker </div>
+    </body>
+</html>
