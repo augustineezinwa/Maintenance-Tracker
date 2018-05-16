@@ -18,6 +18,7 @@
 
 body {
     background-color: #fed766;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 h1 {
@@ -29,9 +30,10 @@ input[type=text], input[type=password] {
     padding: 8px;
     margin-top:8px;
     margin-bottom: 8px;
-    background-color: #eff1f3;
+    background-color: #272727;
     border: none;
-    border-bottom: 2px solid #272727;
+    border-bottom: 2px solid #eff1f3;
+    color:#eff1f3;
 }
 
 input[type=text]:focus, input[type=password]:focus {
@@ -39,11 +41,15 @@ input[type=text]:focus, input[type=password]:focus {
 
 }
 button {
-    width : 100px;
+    width : 100%;
+    height: 50px;
     padding: 8px;
     margin-top:8px;
     margin-bottom:8px;
-    border: 2px solid #272727;
+    border: 0.8px solid #eff1f3;
+    border-radius: 20px;
+    font-size:20px;
+    font-family: 'Arial', 'sans-serif';
 }
 
 button:hover {
@@ -54,8 +60,20 @@ button:hover {
  .login-box {
     width: 400px;
     padding: 30px;
-    border:  2px solid #272727;
-    background-color: #eff1f3;
+    border:  1px solid #eff1f3;
+    border-radius: 20px;
+    background-color: #272727;
+    color: #eff1f3;
+}
+
+.request-box {
+    width: 600px;
+    padding: 30px;
+    border:  1px solid #eff1f3;
+    border-radius: 20px;
+    background-color: #272727;
+    color: #eff1f3;
+    margin-bottom: 20px;
 }
 
 .login-panel {
@@ -64,15 +82,25 @@ button:hover {
     align-items: center;
 }
 
+.request-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-flow: row wrap;
+}
+
 .nav-bar > div {
-    border: 2px solid #272727;
-    padding: 8px;
-    margin: 8px;
+    border: 1px solid #272727;
+    padding: 10px;
+    margin: 10px;
     height: 40px;
+    border-radius: 20px;
 }
 
 .nav-bar > div:hover {
     color: #eff1f3;
+    border:2px solid #eff1f3;
     background-color: #272727;
 }
 .nav-bar {
@@ -82,4 +110,59 @@ button:hover {
 .footer {
     margin: 8px;
     text-align:center;
+}
+
+textarea {
+    width: 100%;
+    height: 20%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    padding: 8px;
+    resize: none;
+    border-radius: 20px;
+    background-color: #272727;
+    color: #eff1f3;
+}
+
+.newcheckbox span {
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    border: 2px solid #272727;
+}
+
+.newcheckbox input {
+    display: none;
+    position:relative;
+}
+
+.newcheckbox input:checked + span {
+    background-color: #272727;
+}
+
+.options {
+    margin-top:5px;
+    display: flex;
+    justify-content:space-between;
+}
+
+.spacing {
+    margin-top: 10px;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    background-color: #272727;
+    color:#eff1f3;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;;
+    font-size: 20px;
+    margin-bottom: 40px;
+    margin-top:40px;
+}
+
+.form-one {
+    margin-top: 40px;
 }
