@@ -166,3 +166,39 @@ select {
 .form-one {
     margin-top: 40px;
 }
+
+.backgroundimage {
+    background-image: url("../images/index.jpg");
+    background-color:black;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+}
+
+.welcome-text-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.welcome-text-box h1 {
+    margin-top: 250px;
+    color: #eff1f3;
+    font-size: 60px;
+}
+.welcome-note {
+    color: #f3f0ef;
+    margin-bottom: 50px;
+    font-size: 20px;
+}
+
+.footer {
+    color: #eff1f3;
+}
+
+.button-index {
+    width: 300px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
