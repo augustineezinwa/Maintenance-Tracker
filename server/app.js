@@ -1,11 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import indexRouter from './router/indexRouter';
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 const PORT = process.env.PORT || 2020;
+app.use('/api/v1', indexRouter);
 app.use('/', (req, res) => {
   res.send({
     status: 'success',

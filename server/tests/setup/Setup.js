@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../../App';
+import app from '../../app';
 
 const should = chai.should();
 chai.use(chaiHttp);
