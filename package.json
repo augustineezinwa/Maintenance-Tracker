@@ -6,7 +6,8 @@
   "scripts": {
     "test": "nyc --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit",
     "start": "babel-node server/App.js",
-    "coveralls":"nyc --reporter=lcov --reporter=text --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit "
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coveralls": "nyc --reporter=lcov --reporter=text --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit "
   },
   "repository": {
     "type": "git",
