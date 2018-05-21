@@ -6,16 +6,16 @@ import { requests } from '../dummydatabase/dummydatabase';
   */
 class RequestController {
   /**
-        * @static
-        *
-        * @param {object} req - The request payload sent to the router
-        * @param {object} res - The response payload sent back from the controller
-        *
-        * @returns {object} - status Message and the particular request by id.
-        *
-        * @description This method gets a request by id in maintenance tracker
-        * @memberOf RequestController
-        */
+          * @static
+          *
+          * @param {object} req - The request payload sent to the router
+          * @param {object} res - The response payload sent back from the controller
+          *
+          * @returns {object} - status Message and the particular request by id.
+          *
+          * @description This method gets a request by id in maintenance tracker
+          * @memberOf RequestController
+          */
   static getRequestById(req, res) {
     const { requestId } = req.params;
     const recievedRequest = requests.find(request => +request.id === +requestId);
@@ -32,16 +32,16 @@ class RequestController {
   }
 
   /**
-    * @static
-    *
-    * @param {object} req - The request payload sent to the router
-    * @param {object} res - The response payload sent back from the controller
-    *
-    * @returns {object} - status Message and the all requests that belongs to a user
-    *
-    * @description This method gets all requests in maintenance tracker
-    * @memberOf RequestController
-    */
+      * @static
+      *
+      * @param {object} req - The request payload sent to the router
+      * @param {object} res - The response payload sent back from the controller
+      *
+      * @returns {object} - status Message and the all requests that belongs to a user
+      *
+      * @description This method gets all requests in maintenance tracker
+      * @memberOf RequestController
+      */
   static getAllRequests(req, res) {
     if (requests.length < 1) {
       return res.status(404).json({
@@ -54,6 +54,29 @@ class RequestController {
     return res.status(200).json({
       status: 'success',
       data: requests
+    });
+  }
+  /**
+    * @static
+    *
+    * @param {object} req - The request payload sent to the router
+    * @param {object} res - The response payload sent back from the controller
+    *
+    * @returns {object} - status Message and the particular request created.
+    *
+    * @description This method creates a request in maintenance tracker
+    * @memberOf RequestController
+      */
+  static createRequest(req, res) {
+    const newRequest = req.body;
+    let { id } = requests[requests.length - 1];
+    id = id ? id += 1 : 1;
+    requests.push({ id, ...newRequest });
+    return res.status(201).json({
+      status: 'success',
+      data: {
+        message: 'Request was created successfully', newRequest
+      }
     });
   }
 }
