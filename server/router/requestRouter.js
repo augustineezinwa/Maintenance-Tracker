@@ -2,7 +2,10 @@ import express from 'express';
 import RequestController from '../controllers/RequestController';
 import RequestValidation from '../middlewares/RequestValidaton';
 
-const { createRequest, getRequestById, getAllRequests } = RequestController;
+const {
+  createRequest, getRequestById,
+  getAllRequests, updateRequest
+} = RequestController;
 const {
   validateUrl,
   validateRequestTitle,
@@ -16,5 +19,9 @@ requestRouter.post(
 );
 requestRouter.get('/users/requests/:requestId', validateUrl, getRequestById);
 requestRouter.get('/users/requests', getAllRequests);
+requestRouter.put(
+  '/users/requests/:requestId', validateUrl, validateRequestTitle,
+  validateRequestStatus, validateRequestMessage, updateRequest
+);
 
 export default requestRouter;

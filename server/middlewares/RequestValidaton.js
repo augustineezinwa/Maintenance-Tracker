@@ -47,7 +47,6 @@ class RequestValidation {
     */
   static validateRequestTitle(req, res, next) {
     let { requestTitle } = req.body;
-    console.log(requestTitle);
     requestTitle = typeof requestTitle === 'string' ? requestTitle.trim() : '';
     requestTitle = validateRequestMessage(requestTitle);
     if (!requestTitle.status) {
