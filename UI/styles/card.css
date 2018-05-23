@@ -1,0 +1,99 @@
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3;
+    width: 300px;
+    height: 260px;
+    margin: 20px;
+    background-color: white;
+}
+.card-new {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3;
+    width: 300px;
+    height: 200px;
+    background-color: white;
+}
+.card-search {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3;
+    width: 100%;
+    height: 200px;
+    background-color: white;
+}
+
+.card-new:hover {
+    box-shadow: 0 12px 24px  0  rgba(0, 0, 0, 0.2);
+}
+
+ul {
+    z-index: 3;
+    list-style-type: none;
+}
+.request-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3;
+    width: 90%;
+    height: 20%;
+    margin: 5px;
+    background-color: white;
+}
+.search-display-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3;
+    width: 90%;
+    height: 50%;
+    margin: 5px;
+    background-color: white;
+}
+.request-mother-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3;
+    width: 95%;
+    height: 78%;
+    margin: 5px;
+    background-color: white;
+    overflow:hidden;
+    overflow-y:scroll;
+    position: relative;
+}
+.card:hover {
+    box-shadow: 0 12px 24px  0  rgba(0, 0, 0, 0.2);
+}
+
+.container {
+    padding : 20px 5px;
+    text-align: center;
+    border-top: 0.5px solid black;
+}
+.make-a-request-icon {
+    font-size: 160px;
+    margin: 0;
+    text-align: center;
+    padding-bottom: 20px;
+    color: hotpink;
+}
+.make-a-request-icon:hover {
+    font-size: 165px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .card {
+        width : 100%;
+        height: 240px;
+    }
+    .make-a-request-icon {
+        font-size: 140px;
+        margin : 0;
+        text-align :center;
+        padding-bottom: 20px;
+    }
+    .make-a-request-icon:hover {
+        font-size: 145px;
+        text-align: center;
+    }
+    
+    
+    }
+
+
