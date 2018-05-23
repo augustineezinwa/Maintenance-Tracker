@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding : 0;
+}
+.nav-bar {
+    display : flex;
+    flex-wrap: wrap;  
+    background-color: gray;  
+    color: white;
+    position: sticky;
+    top:0;
+    z-index:3;
+}
+
+.nav-bar-icon-toggle {
+    display: none;
+    padding: 20px 25px;
+}
+
+.nav-bar-brand-logo {
+    padding: 20px 25px;
+}
+.nav-bar-link {
+    padding: 20px 25px;
+    margin: 0 auto;
+    
+}
+.nav-bar-link:hover {
+    background-color: black;
+    color:white;
+    font-size: 14pt;
+}
+.nav-bar-left {
+display: flex;
+}
+
+.nav-bar-right {
+    display:flex;
+    margin-left:auto;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .nav-bar-right, .nav-bar {
+        flex-direction: column;
+    }
+    .nav-bar-right {
+        margin-left: 0;
+    }
+    .nav-bar-right {
+        display:none;
+    }
+    .nav-bar-icon-toggle {
+        display :initial;
+        align-self: flex-end;
+        position: absolute;
+        cursor: pointer; 
+    } 
+    .nav-bar-toggle-display {
+        display: flex;
+    }
+    .nav-bar-link {
+        width :100%;
+    }
+}
+.getNav a {
+    text-decoration: none;
+    color: white;
+}
+.nav-bar-left a {
+    text-decoration : none;
+    color: white;
+}
+
+.active {
+    background-color: black;
+}
