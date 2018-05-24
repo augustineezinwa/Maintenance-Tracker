@@ -1,0 +1,95 @@
+.main {
+    margin :5% 20%;
+    text-align: center;
+}
+
+.header {
+    background-color: dodgerblue;
+    color: white;
+    padding: 10px 30px;
+}
+
+.header-line {
+    
+    box-shadow: 0 12px 24px  0  rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
+}
+
+.main-container {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+.request-container {
+    height: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px; 
+   
+}
+.main-container a {
+    text-decoration: none;
+}
+.card:hover {
+    text-decoration:underline;
+}
+.background {
+    background-image: url('../images/background.jpeg');
+    background-size:cover;
+    position: relative;
+}
+@media only screen and (max-width: 768px) {
+ .main {
+     margin: 0;
+     text-align: center;
+ }
+    .inner-box {
+        padding: 2px 12px;
+    }
+    .display-container {
+        display: flex;
+        justify-content: flex-start;
+        height: 100px;
+    }
+}
+
+.adjust {
+    margin-left: 8%;
+}
+
+.display-container {
+    display : flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.inner-box {
+    padding: 8px 12px; 
+    margin: 0;
+    font-size: 20px;
+}
+.inner-box a {
+    text-decoration : none;
+    color: black;
+}
+.inner-box a:hover {
+    color: white;
+    background-color: hotpink
+}
+.request-card:hover {
+    color: white;
+    background-color: hotpink;
+}
+
+#requestheader {
+    background-color: hotpink;
+    color:white;
+    position: sticky;
+    top: 0;
+}
