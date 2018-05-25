@@ -1,11 +1,13 @@
 
 /**
  * @class InputFieldsValidaton
+ *
  * @description Validates Input fields
  */
 class InputFieldsValidation {
   /**
     * @description -This method validates input fields in Maintenance-Tracker forms.
+    *
     * @param {string} TextField - The data sent from the middleware.
     *
     * @returns {object} - returns the validated data to the middleware.

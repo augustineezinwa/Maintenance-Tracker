@@ -6,4 +6,6 @@ process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : '';
 const databaseConfig = config[process.env.NODE_ENV || 'development'];
 const pool = new Pool(databaseConfig);
 
-export default pool;
+export default {
+  query: (request, callback) => pool.query(request, callback)
+};
