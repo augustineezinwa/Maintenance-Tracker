@@ -1,8 +1,12 @@
 import chai from 'chai';
 import InputFieldValidation from '../../helper/InputFieldValidaton';
 
-const { validateStatus, validateRequestMessage } = InputFieldValidation;
 const should = chai.should();
+const {
+  validateStatus,
+  validateRequestMessage,
+
+} = InputFieldValidation;
 const invalidDataOne = 'fish';
 const invalidDataTwo = '34490034';
 const invalidDataThree = '';
@@ -99,3 +103,4 @@ describe('Testing validateRequestMessage method', () => {
     done();
   });
 });
+

@@ -1,5 +1,8 @@
-import pool from '../connections/pool';
+import connect from '../connections/connect';
 import { createUserTable } from '../helper/instructions/userInstructions';
+import ErrorHandler from '../helper/ErrorHandler';
+
+const { handleTableCreationError } = ErrorHandler;
 /**
   * @class
   *
@@ -18,34 +21,13 @@ class UserMigration {
     * @memberOf migrateUser
     */
   static migrateUser(req, res) {
-    pool.connect((err, client, done) => {
-      if (err) {
-        return res.status(500).json({
-          status: 'fail',
-          data: {
-            message: 'Cant connect to database'
-          }
-        });
-      }
-      client.query(createUserTable, (err) => {
-        done();
-        if (err) {
-          return res.status(500).json({
-            status: 'fail',
-            data: {
-              message: 'cant write to table'
-            }
-          });
+    connect.query(createUserTable)
+      .then(data => res.status(200).json({
+        status: 'success',
+        data: {
+          message: 'successfully created table',
         }
-        return res.status(200).json({
-          status: 'success',
-          data: {
-            message: 'Successfully created table'
-
-          }
-        });
-      });
-    });
+      })).catch(err => handleTableCreationError(err, res));
   }
 }
 
