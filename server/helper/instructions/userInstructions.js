@@ -19,7 +19,7 @@ const createUserData = (firstName, lastName, email, password, admin) => {
 
 const findEmail = (email) => {
   const query = {
-    text: 'SELECT email FROM users WHERE users.email = $1',
+    text: 'SELECT * FROM users WHERE users.email = $1',
     values: [email]
   };
   return query;

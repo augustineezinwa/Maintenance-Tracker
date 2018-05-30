@@ -41,4 +41,55 @@ describe('testing user sign up', () => {
         done();
       });
   });
+  it('should successfully login a user that enters correctly all his credentials', (done) => {
+    const newUser = {
+      firstName: 'Augustine',
+      lastName: 'ezinwa',
+      email: 'jet55591@gmail.com',
+      password: '5654545q',
+    };
+    chai.request(app).post('/api/v1/auth/login')
+      .send(newUser).end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('status').eql('success');
+        res.body.data.should.have.property('message').eql('you are logged in');
+        res.body.data.should.have.property('token');
+
+        done();
+      });
+  });
+  it('should return an error message if user enter an incorrect password', (done) => {
+    const newUser = {
+      firstName: 'Augustine',
+      lastName: 'ezinwa',
+      email: 'jet55591@gmail.com',
+      password: '5654545',
+    };
+    chai.request(app).post('/api/v1/auth/login')
+      .send(newUser).end((err, res) => {
+        res.should.have.status(401);
+        res.body.should.be.a('object');
+        res.body.should.have.property('status').eql('fail');
+        res.body.data.should.have.property('message').eql('password is incorrect!');
+
+        done();
+      });
+  });
+  it('should return an error message if user enters a non-existing email', (done) => {
+    const newUser = {
+      firstName: 'Augustine',
+      lastName: 'ezinwa',
+      email: 'aaron.biliyok@gmail.com',
+      password: '5654545q',
+    };
+    chai.request(app).post('/api/v1/auth/login')
+      .send(newUser).end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.should.have.property('status').eql('fail');
+        res.body.data.should.have.property('message').eql('you cant login at this time, email doesnt exist');
+        done();
+      });
+  });
 });
