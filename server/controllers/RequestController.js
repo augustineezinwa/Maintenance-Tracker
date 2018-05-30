@@ -1,4 +1,9 @@
 import { requests } from '../dummydatabase/dummydatabase';
+import connect from '../connections/connect';
+import { createRequestData , findAllrequestsById } from '../helper/instructions/requestInstructions';
+import ErrorHandler from '../helper/ErrorHandler';
+
+const { handleTableReadError } = ErrorHandler;
 /**
   * @class RequestController
   *
@@ -43,18 +48,23 @@ class RequestController {
         * @memberOf RequestController
         */
   static getAllRequests(req, res) {
-    if (requests.length < 1) {
-      return res.status(404).json({
-        status: 'fail',
-        data: {
-          message: 'requests not found!'
-        }
-      });
-    }
-    return res.status(200).json({
-      status: 'success',
-      data: requests
-    });
+    const id = req.id;
+    connect.query(findAllrequestsById(id))
+    .then(data => {
+      if(data.rows.length < 1) {
+        return res.status(404).json({
+          status: 'fail',
+          data: {
+            message: 'No request found at this time'
+          }
+        })
+      }
+      return res.status(200).json({
+        status: 'success',
+        data: data.rows
+      })
+    })
+    .catch(err => handleTableReadError(err, res));
   }
   /**
       * @static

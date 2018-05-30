@@ -21,32 +21,30 @@ class Authentication {
   */
   static secureRoute(req, res, next) {
     const token = req.body.token || req.query.token || req.headers.authorization;
-    if (token) {
-      jwt.verify(token, process.env.PRIVATE_KEY, (err, decoded) => {
-        if (err) {
-          return res.status(401).json({
-            status: 'fail',
-            data: {
-              message: 'You are not allowed to access this route, Failed to authenticate!'
-            }
-
-          });
-        }
-        req.decoded = decoded;
-        req.id = req.params.businessId;
-        return next();
-      });
-    }
     if (!token) {
-      return res.status(403).send({
-        status: 'fail',
-        data: {
-          message: 'You are forbidden from accessing this route! No token! You need to sign up!'
-        }
-
-      });
+      return res.status(403).json({
+      status: 'fail',
+      data: {
+        message: 'Forbidden!, please sign up or login!'
+      }
+    });
     }
+      jwt.verify(token, process.env.PRIVATE_KEY,( err, decoded) => {
+        if(err) {
+          return  res.status(401).json({
+          status: 'fail',
+          data: {
+            message : 'Unauthorized! please provide valid credentials to continue'
+          }
+        });
+        }
+      const { id, adminStatus, email } = decoded.payload;
+      req.id = id;
+      req.admin = adminStatus;
+      req.email = email;
+      return next();
+      });
   }
-}
+    }
 
 export default Authentication;
