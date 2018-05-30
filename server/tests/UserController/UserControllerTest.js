@@ -17,10 +17,10 @@ describe('testing user sign up', () => {
         res.body.should.have.property('status').eql('success');
         res.body.data.should.have.property('message').eql('you signed up successfully');
         res.body.data.should.have.property('token');
-
         done();
       });
   });
+
   it('should return an error message if a user tries to sign up with an already existing email', (done) => {
     const newUser = {
       firstName: 'Augustine',

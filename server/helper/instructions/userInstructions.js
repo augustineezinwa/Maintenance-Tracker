@@ -1,5 +1,5 @@
 const createUserTable = `
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users(ID SERIAL PRIMARY KEY,
     firstName TEXT         NOT NULL,
     lastName  TEXT         NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE users(ID SERIAL PRIMARY KEY,
    password VARCHAR(100)       NOT NULL,
    admin BOOLEAN           NOT NULL);
    `;
-const destroyUserTable = 'DROP TABLE IF EXISTS users;';
+const destroyUserTable = 'DROP TABLE IF EXISTS users CASCADE;';
 
 const createUserData = (firstName, lastName, email, password, admin) => {
   const query = {
