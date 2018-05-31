@@ -35,7 +35,7 @@ class InputFieldsValidation {
     let message;
     message = typeof TextField === 'string' ? TextField.trim() : '';
     message = message.length === 0 ? 'Message is invalid or empty' : message;
-    message = message.length > 50 ? 'Message is too long' : message;
+    message = message.length > 150 ? 'Message is too long' : message;
     message = message.length < 5 ? 'Message is too short' : message;
     message = (message.includes('@@') || message.includes('??') ||
     message.includes('%%') || message.includes('&&\n')) ||

@@ -21,8 +21,7 @@ const invalidMessageTwo = '$%%%come out fish king!';
 const invalidMessageThree = '$$flying donkey && fishes fell of the wheel';
 const invalidMessageFour = Number.parseInt('250000donkeys and goats', 10);
 const invalidMessageFive = 'H I ';
-const invalidMessageSix = `'Hi..........................                             
-                 '...''`;
+
 describe('Testing validateStatus method', () => {
   it('should not post a particular request if status field is invalid', (done) => {
     const output = validateStatus(invalidDataOne);
@@ -95,11 +94,6 @@ describe('Testing validateRequestMessage method', () => {
   it('should not post a request if message fied is too short', (done) => {
     const output = validateRequestMessage(invalidMessageFive);
     output.should.be.eql('Message is too short');
-    done();
-  });
-  it('should not post a request if message fied is too long', (done) => {
-    const output = validateRequestMessage(invalidMessageSix);
-    output.should.be.eql('Message is too long');
     done();
   });
 });

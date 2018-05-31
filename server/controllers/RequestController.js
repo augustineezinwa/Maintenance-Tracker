@@ -1,9 +1,9 @@
 import { requests } from '../dummydatabase/dummydatabase';
 import connect from '../connections/connect';
-import { findAllrequestsById, findRequestById } from '../helper/instructions/requestInstructions';
+import { findAllrequestsById, findRequestById, createRequestData } from '../helper/instructions/requestInstructions';
 import ErrorHandler from '../helper/ErrorHandler';
 
-const { handleTableReadError } = ErrorHandler;
+const { handleTableReadError, handleTableWriteError } = ErrorHandler;
 /**
   * @class RequestController
   *
@@ -83,16 +83,27 @@ class RequestController {
       * @memberOf RequestController
         */
   static createRequest(req, res) {
-    const newRequest = req.body;
-    let { id } = requests[requests.length - 1];
-    id = id ? id += 1 : 1;
-    requests.push({ id, ...newRequest });
-    return res.status(201).json({
-      status: 'success',
-      data: {
-        message: 'Request was created successfully', newRequest
-      }
-    });
+    const { requestTitle, requestType, message } = req.body;
+    const { id } = req;
+    connect.query(createRequestData(requestTitle, requestType, message, id))
+      .then((data) => {
+        const { resolved, rejected, approved } = data.rows[0];
+        res.status(201).json({
+          status: 'success',
+          data: {
+            message: 'request was created successfully',
+            request: {
+              id: data.rows[0].id,
+              requestTitle,
+              requestType,
+              message,
+              approved,
+              rejected,
+              resolved
+            }
+          }
+        });
+      }).catch(err => handleTableWriteError(err, res));
   }
   /**
 * @static

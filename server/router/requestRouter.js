@@ -12,12 +12,13 @@ const {
   validateUrl,
   validateRequestTitle,
   validateRequestMessage,
-  validateRequestStatus
+  validateRequestStatus,
+  validateRequestType
 } = RequestValidation;
 const requestRouter = express.Router();
 requestRouter.post(
-  '/users/requests', validateRequestTitle, validateRequestMessage,
-  validateRequestStatus, createRequest
+  '/users/requests', secureRoute, validateRequestTitle,
+  validateRequestType, validateRequestMessage, createRequest
 );
 requestRouter.get('/users/requests/:requestId', validateUrl, secureRoute, getRequestById);
 requestRouter.get('/users/requests', secureRoute, getAllRequests);

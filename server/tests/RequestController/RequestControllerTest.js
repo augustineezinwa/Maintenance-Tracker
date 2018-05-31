@@ -310,16 +310,14 @@ describe('Testing get all request', () => {
 });
 
 describe('Testing post request', () => {
-  it('should post a particular request', (done) => {
+  it('should post a request with a token', (done) => {
     chai.request(app).post('/api/v1/users/requests')
       .send({
         requestTitle: 'Electric fish is faulty!',
-        resolved: 'success',
-        approved: 'fail ',
-        rejected: 'fail',
+        requestType: 'maintenance',
         message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
       })
+      .send({ token: process.env.USER_TOKEN })
       .end((err, res) => {
         should.not.exist(err);
         res.should.have.status(201);
@@ -327,20 +325,21 @@ describe('Testing post request', () => {
         res.body.status.should.eql('success');
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
-          message: 'Request was created successfully',
-          newRequest: {
+          message: 'request was created successfully',
+          request: {
+            id: 1,
             requestTitle: 'Electric fish is faulty!',
-            resolved: 'success',
-            approved: 'fail ',
-            rejected: 'fail',
-            message: 'My Electric fish is faulty, Come check it out',
-            userId: 1
+            requestType: 'maintenance',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric fish is faulty, Come check it out'
           }
         });
         done();
       });
   });
-  it('should post a particular request', (done) => {
+  it('should not post a particular request without a token', (done) => {
     chai.request(app).post('/api/v1/users/requests')
       .send({
         requestTitle: 'Electric fish is faulty!',
@@ -352,28 +351,16 @@ describe('Testing post request', () => {
       })
       .end((err, res) => {
         should.not.exist(err);
-        res.should.have.status(201);
+        res.should.have.status(403);
         res.body.should.be.a('object');
-        res.body.status.should.eql('success');
+        res.body.status.should.eql('fail');
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
-          message: 'Request was created successfully',
-          newRequest: {
-            requestTitle: 'Electric fish is faulty!',
-            resolved: 'success',
-            approved: 'fail',
-            rejected: 'fail',
-            message: 'My Electric fish is faulty, Come check it out',
-            userId: 1
-          }
+          message: 'Forbidden!, please sign up or login!'
         });
 
         done();
       });
-  });
-  it('should show that request has increased by one', (done) => {
-    requests.length.should.be.eql(3);
-    done();
   });
   it('should not post request if request title is missing or invalid', (done) => {
     chai.request(app).post('/api/v1/users/requests')
@@ -381,8 +368,10 @@ describe('Testing post request', () => {
         resolved: 'success',
         approved: 'fail',
         rejected: 'fail',
-        message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
+        message: 'My Electric fish is faulty, Come check it out'
+      })
+      .send({
+        token: process.env.USER_TOKEN
       })
       .end((err, res) => {
         should.not.exist(err);
@@ -400,11 +389,14 @@ describe('Testing post request', () => {
     chai.request(app).post('/api/v1/users/requests')
       .send({
         requestTitle: 'Neutral is naked',
+        requestType: 'maintenance',
         resolved: 'success',
         approved: 'fail',
         rejected: 'fail',
-        message: '',
-        userId: 1
+        message: ''
+      })
+      .send({
+        token: process.env.USER_TOKEN
       })
       .end((err, res) => {
         should.not.exist(err);
@@ -418,37 +410,18 @@ describe('Testing post request', () => {
         done();
       });
   });
-  it('should not post request if approve status field is neither success or fail', (done) => {
+  it('should not post request if request type field is invalid', (done) => {
     chai.request(app).post('/api/v1/users/requests')
       .send({
-        requestTitle: 'Live is naked',
+        requestTitle: 'Neutral is naked',
+        requestType: 'donkey',
         resolved: 'success',
-        approved: 'true',
+        approved: 'fail',
         rejected: 'fail',
-        message: 'Come over, it\'s dangerous here',
-        userId: 1
+        message: ''
       })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'The approved status field can only be success or fail'
-        });
-        done();
-      });
-  });
-  it('should not post request if rejected status field is neither success or fail', (done) => {
-    chai.request(app).post('/api/v1/users/requests')
       .send({
-        requestTitle: 'Live is naked',
-        resolved: 'success',
-        approved: 'success',
-        rejected: '',
-        message: 'Come over, it\'s dangerous here',
-        userId: 1
+        token: process.env.USER_TOKEN
       })
       .end((err, res) => {
         should.not.exist(err);
@@ -457,29 +430,7 @@ describe('Testing post request', () => {
         res.body.status.should.eql('fail');
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
-          message: 'The rejected status field can only be success or fail'
-        });
-        done();
-      });
-  });
-  it('should not post request if rejected status field is neither success or fail', (done) => {
-    chai.request(app).post('/api/v1/users/requests')
-      .send({
-        requestTitle: 'Live is naked',
-        resolved: 'donkey',
-        approved: 'success',
-        rejected: 'fail',
-        message: 'Come over, it\'s dangerous here',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'The resolved status field can only be success or fail'
+          message: 'Request type can only be maintenance or repair'
         });
         done();
       });
@@ -519,7 +470,7 @@ describe('Testing get all request for a user', () => {
       });
   });
   it('should get a request by id', (done) => {
-    chai.request(app).get('/api/v1/users/requests/1')
+    chai.request(app).get('/api/v1/users/requests/5')
       .send({
         token: process.env.USER_TOKEN
       })
@@ -530,6 +481,54 @@ describe('Testing get all request for a user', () => {
         res.body.status.should.eql('fail');
         res.body.data.should.be.a('object');
         res.body.data.message.should.be.eql('No request found at this time!');
+        done();
+      });
+  });
+  it('should get a request by id', (done) => {
+    chai.request(app).get('/api/v1/users/requests/1')
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('array');
+        res.body.data[0].should.be.eql({ 
+          id: 1,
+          requesttitle: 'Electric fish is faulty!',
+          requesttype: 'maintenance',
+          resolved: 'pending',
+          approved: 'pending',
+          rejected: 'pending',
+          message: 'My Electric fish is faulty, Come check it out',
+          userid: 1,
+        });
+        done();
+      });
+  });
+  it('should get all requests for an authenticated user', (done) => {
+    chai.request(app).get('/api/v1/users/requests')
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('array');
+        res.body.data[0].should.be.eql({ 
+          id: 1,
+          requesttitle: 'Electric fish is faulty!',
+          requesttype: 'maintenance',
+          resolved: 'pending',
+          approved: 'pending',
+          rejected: 'pending',
+          message: 'My Electric fish is faulty, Come check it out',
+          userid: 1,
+        });
         done();
       });
   });
