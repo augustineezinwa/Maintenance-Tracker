@@ -28,4 +28,16 @@ const findAllrequestsById = (id) => {
   return query;
 };
 
-export { createRequestData, createRequestTable, findAllrequestsById, destroyRequestTable };
+const findRequestById = (id, userId) => {
+  const query = {
+    text: 'SELECT * FROM requests WHERE requests.userid = $1 AND requests.id = $2',
+    values: [userId, id]
+  };
+  return query;
+};
+
+export {
+  createRequestData, createRequestTable,
+  findAllrequestsById, destroyRequestTable,
+  findRequestById
+};

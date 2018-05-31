@@ -7,7 +7,8 @@ import {
 import {
   destroyRequestTable,
   createRequestData,
- findAllrequestsById
+  findAllrequestsById,
+  findRequestById
 } from '../../helper/instructions/requestInstructions';
 
 it('testing sql instruction for dropping users table', (done) => {
@@ -26,24 +27,32 @@ it('testing sql instruction for creating request', (done) => {
   const output = createRequestData('faulty tv', 'maintenance', 'come fix my tv', 1);
   output.should.be.a('object');
   output.text.should.be
-  .eql(`INSERT INTO requests(requestTitle, requestType, resolved, approved, rejected, message, userId) 
+    .eql(`INSERT INTO requests(requestTitle, requestType, resolved, approved, rejected, message, userId) 
     VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`);
   output.values.should.be.eql(['faulty tv', 'maintenance', 'pending', 'pending', 'pending', 'come fix my tv', 1]);
   done();
 });
-it('testing sql instruction for creating request', (done) => {
+it('testing sql instruction for getting all requests', (done) => {
   const output = findAllrequestsById(1);
   output.should.be.a('object');
   output.text.should.be
-  .eql('SELECT * FROM requests WHERE requests.userid = $1');
+    .eql('SELECT * FROM requests WHERE requests.userid = $1');
   output.values.should.be.eql([1]);
   done();
 });
-it('testing sql instruction for creating user', (done) => {
-  const output = createUserData('Aaron', 'ezinwa', 'aaron.biliyok@gmail.com', 'inieef',  false);
+it('testing sql instruction for getting a particular request', (done) => {
+  const output = findRequestById(1, 2);
   output.should.be.a('object');
   output.text.should.be
-  .eql('INSERT INTO users(firstname, lastname , email, password, admin) VALUES($1, $2, $3, $4, $5) RETURNING *');
+    .eql('SELECT * FROM requests WHERE requests.userid = $1 AND requests.id = $2');
+  output.values.should.be.eql([2, 1]);
+  done();
+});
+it('testing sql instruction for creating user', (done) => {
+  const output = createUserData('Aaron', 'ezinwa', 'aaron.biliyok@gmail.com', 'inieef', false);
+  output.should.be.a('object');
+  output.text.should.be
+    .eql('INSERT INTO users(firstname, lastname , email, password, admin) VALUES($1, $2, $3, $4, $5) RETURNING *');
   output.values.should.be.eql(['Aaron', 'ezinwa', 'aaron.biliyok@gmail.com', 'inieef', false]);
   done();
 });

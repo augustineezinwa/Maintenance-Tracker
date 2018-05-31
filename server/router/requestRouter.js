@@ -19,7 +19,7 @@ requestRouter.post(
   '/users/requests', validateRequestTitle, validateRequestMessage,
   validateRequestStatus, createRequest
 );
-requestRouter.get('/users/requests/:requestId', validateUrl, getRequestById);
+requestRouter.get('/users/requests/:requestId', validateUrl, secureRoute, getRequestById);
 requestRouter.get('/users/requests', secureRoute, getAllRequests);
 requestRouter.put(
   '/users/requests/:requestId', validateUrl, validateRequestTitle,

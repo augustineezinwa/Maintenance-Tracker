@@ -1,6 +1,6 @@
 import { requests } from '../dummydatabase/dummydatabase';
 import connect from '../connections/connect';
-import { createRequestData , findAllrequestsById } from '../helper/instructions/requestInstructions';
+import { findAllrequestsById, findRequestById } from '../helper/instructions/requestInstructions';
 import ErrorHandler from '../helper/ErrorHandler';
 
 const { handleTableReadError } = ErrorHandler;
@@ -23,17 +23,22 @@ class RequestController {
     */
   static getRequestById(req, res) {
     const { requestId } = req.params;
-    const recievedRequest = requests.find(request => +request.id === +requestId);
-    if (recievedRequest) {
-      return res.status(200).json({
-        status: 'success',
-        data: recievedRequest
-      });
-    }
-    return res.status(404).json({
-      status: 'fail',
-      data: { message: 'Request not found!' }
-    });
+    const { id } = req;
+    connect.query(findRequestById(requestId, id))
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return res.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'No request found at this time!'
+            }
+          });
+        }
+        return res.status(200).json({
+          status: 'success',
+          data: data.rows
+        });
+      }).catch(err => handleTableReadError(err, res));
   }
 
   /**
@@ -48,23 +53,23 @@ class RequestController {
         * @memberOf RequestController
         */
   static getAllRequests(req, res) {
-    const id = req.id;
+    const { id } = req;
     connect.query(findAllrequestsById(id))
-    .then(data => {
-      if(data.rows.length < 1) {
-        return res.status(404).json({
-          status: 'fail',
-          data: {
-            message: 'No request found at this time'
-          }
-        })
-      }
-      return res.status(200).json({
-        status: 'success',
-        data: data.rows
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return res.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'No request found at this time'
+            }
+          });
+        }
+        return res.status(200).json({
+          status: 'success',
+          data: data.rows
+        });
       })
-    })
-    .catch(err => handleTableReadError(err, res));
+      .catch(err => handleTableReadError(err, res));
   }
   /**
       * @static

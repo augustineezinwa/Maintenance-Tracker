@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../app';
 import { requests } from '../../dummydatabase/dummydatabase';
+import connect from '../../connections/connect';
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -200,13 +201,16 @@ describe('Testing put request', () => {
 describe('Testing get a request', () => {
   it('should get a request by id', (done) => {
     chai.request(app).get('/api/v1/users/requests/1')
+      .send({
+        token: 'drcfef343224edsAsomefaketoken'
+      })
       .end((err, res) => {
         should.not.exist(err);
-        res.should.have.status(200);
+        res.should.have.status(401);
         res.body.should.be.a('object');
-        res.body.status.should.eql('success');
+        res.body.status.should.eql('fail');
         res.body.data.should.be.a('object');
-        res.body.data.should.be.eql(requests[0]);
+        res.body.data.message.should.be.eql('Unauthorized! please provide valid credentials to continue');
         done();
       });
   });
@@ -214,12 +218,12 @@ describe('Testing get a request', () => {
     chai.request(app).get('/api/v1/users/requests/+90')
       .end((err, res) => {
         should.not.exist(err);
-        res.should.have.status(404);
+        res.should.have.status(403);
         res.body.should.be.a('object');
         res.body.status.should.eql('fail');
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
-          message: 'Request not found!'
+          message: 'Forbidden!, please sign up or login!'
         });
         done();
       });
@@ -252,20 +256,7 @@ describe('Testing get a request', () => {
         done();
       });
   });
-  it('should return an error message for more invalid url input', (done) => {
-    chai.request(app).get('/api/v1/users/requests/5##/')
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(404);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'Request not found!'
-        });
-        done();
-      });
-  });
+
   it('should return an error message for more invalid url input', (done) => {
     chai.request(app).get('/api/v1/users/requests/5&&')
       .end((err, res) => {
@@ -282,7 +273,7 @@ describe('Testing get a request', () => {
   });
 });
 describe('Testing get all request', () => {
-    it('should sign up user and obtain token', (done) => {
+  it('should sign up user and obtain token', (done) => {
     const newUser = {
       firstName: 'Augustine',
       lastName: 'ezinwa',
@@ -302,10 +293,10 @@ describe('Testing get all request', () => {
       });
   });
   it('should get a all requests', (done) => {
-    chai.request(app).get('/api/v1/users/requests').
-    send({
-      token : process.env.USER_TOKEN
-    })
+    chai.request(app).get('/api/v1/users/requests')
+      .send({
+        token: process.env.USER_TOKEN
+      })
       .end((err, res) => {
         should.not.exist(err);
         res.should.have.status(404);
@@ -509,12 +500,12 @@ describe('Testing get all request for a user', () => {
         done();
       });
   });
-    it(`should return an error message if user provides
+  it(`should return an error message if user provides
      a fake token while trying to get all requests`, (done) => {
     chai.request(app).get('/api/v1/users/requests')
-    .send({
-      token : 'someFAKEtPOKNE3$#%$%#'
-    })
+      .send({
+        token: 'someFAKEtPOKNE3$#%$%#'
+      })
       .end((err, res) => {
         should.not.exist(err);
         res.should.have.status(401);
@@ -523,6 +514,36 @@ describe('Testing get all request for a user', () => {
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
           message: 'Unauthorized! please provide valid credentials to continue'
+        });
+        done();
+      });
+  });
+  it('should get a request by id', (done) => {
+    chai.request(app).get('/api/v1/users/requests/1')
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.message.should.be.eql('No request found at this time!');
+        done();
+      });
+  });
+  it('should return an error message for more invalid url input', (done) => {
+    chai.request(app).get('/api/v1/users/requests/55')
+      .send({ token: process.env.USER_TOKEN })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'No request found at this time!'
         });
         done();
       });
