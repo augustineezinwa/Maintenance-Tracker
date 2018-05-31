@@ -8,7 +8,8 @@ import {
   destroyRequestTable,
   createRequestData,
   findAllrequestsById,
-  findRequestById
+  findRequestById,
+  updateRequestData
 } from '../../helper/instructions/requestInstructions';
 
 it('testing sql instruction for dropping users table', (done) => {
@@ -30,6 +31,15 @@ it('testing sql instruction for creating request', (done) => {
     .eql(`INSERT INTO requests(requestTitle, requestType, resolved, approved, rejected, message, userId) 
     VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`);
   output.values.should.be.eql(['faulty tv', 'maintenance', 'pending', 'pending', 'pending', 'come fix my tv', 1]);
+  done();
+});
+it('testing sql instruction for updating request', (done) => {
+  const output = updateRequestData('faulty tv', 'maintenance', 'come fix my tv', 1, 2);
+  output.should.be.a('object');
+  output.text.should.be
+    .eql(`UPDATE requests SET requestTitle = $1, requestType = $2, message = $3 
+    WHERE requests.userId =$4 AND requests.id = $5 RETURNING *`);
+  output.values.should.be.eql(['faulty tv', 'maintenance', 'come fix my tv', 1, 2]);
   done();
 });
 it('testing sql instruction for getting all requests', (done) => {

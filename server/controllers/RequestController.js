@@ -1,6 +1,8 @@
-import { requests } from '../dummydatabase/dummydatabase';
 import connect from '../connections/connect';
-import { findAllrequestsById, findRequestById, createRequestData } from '../helper/instructions/requestInstructions';
+import {
+  findAllrequestsById, findRequestById, createRequestData,
+  updateRequestData
+} from '../helper/instructions/requestInstructions';
 import ErrorHandler from '../helper/ErrorHandler';
 
 const { handleTableReadError, handleTableWriteError } = ErrorHandler;
@@ -117,24 +119,28 @@ class RequestController {
 * @memberOf RequestController
 */
   static updateRequest(req, res) {
-    const newRequest = req.body;
-    const id = req.params.requestId;
-    let oldRequest = requests.find(request => +request.id === +id);
-    if (oldRequest) {
-      oldRequest = { ...oldRequest, ...newRequest };
-      return res.status(200).json({
-        status: 'success',
-        data: {
-          message: 'Request was successfully updated', oldRequest
-        }
+    const { requestTitle, requestType, message } = req.body;
+    const { requestId } = req.params;
+    const { id } = req;
+    connect.query(updateRequestData(requestTitle, requestType, message, id, requestId))
+      .then((data) => {
+        const { resolved, rejected, approved } = data.rows[0];
+        res.status(200).json({
+          status: 'success',
+          data: {
+            message: 'request was updated successfully',
+            request: {
+              id: data.rows[0].id,
+              requestTitle,
+              requestType,
+              message,
+              approved,
+              rejected,
+              resolved
+            }
+          }
+        });
       });
-    }
-    return res.status(404).json({
-      status: 'fail',
-      data: {
-        message: 'Request was not found'
-      }
-    });
   }
 }
 
