@@ -20,6 +20,14 @@ const createRequestData = (requestTitle, requestType, message, id) => {
   return query;
 };
 
+const updateRequestData = (requestTitle, requestType, message, id, requestId) => {
+  const query = {
+    text: `UPDATE requests SET requestTitle = $1, requestType = $2, message = $3 
+    WHERE requests.userId =$4 AND requests.id = $5 RETURNING *`,
+    values: [requestTitle, requestType, message, id, requestId]
+  };
+  return query;
+};
 const findAllrequestsById = (id) => {
   const query = {
     text: 'SELECT * FROM requests WHERE requests.userid = $1',
@@ -39,5 +47,5 @@ const findRequestById = (id, userId) => {
 export {
   createRequestData, createRequestTable,
   findAllrequestsById, destroyRequestTable,
-  findRequestById
+  findRequestById, updateRequestData
 };

@@ -1,6 +1,10 @@
 import InputFieldValidaton from '../helper/InputFieldValidaton';
+import connect from '../connections/connect';
+import ErrorHandler from '../helper/ErrorHandler';
+import { findRequestById } from '../helper/instructions/requestInstructions';
 
 const { validateRequestMessage, validateStatus } = InputFieldValidaton;
+const { handleTableReadError } = ErrorHandler;
 /**
   * @class RequestController
   *
@@ -144,6 +148,55 @@ class RequestValidation {
       });
     }
     return next();
+  }
+  /**
+    * @static
+    *
+    * @param {object} req - The request payload sent to the router
+    * @param {object} res - The response payload sent back from the controller
+    * @param {function} next -The call back function that calls the next router
+    *
+    * @returns {object} - status message or a callback to the next middleware
+    *
+    * @description This method validates the status of every requests in maintenance
+    * tracker before update
+    * @memberOf RequestController
+    */
+  static validateRequestUpdate(req, res, next) {
+    const { id } = req;
+    const { requestId } = req.params;
+    connect.query(findRequestById(requestId, id))
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return res.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'Cant update! Cant find request!'
+            }
+          });
+        }
+        const {
+          approved, requesttitle, requesttype, message
+        } = data.rows[0];
+        const oldRequest = {
+          requestTitle: requesttitle,
+          requestType: requesttype,
+          message
+        };
+        const request = req.body;
+        const newRequest = { ...oldRequest, ...request };
+        if (approved !== 'success') {
+          req.body = newRequest;
+          req.id = id;
+          return next();
+        }
+        return res.status(403).json({
+          status: 'fail',
+          data: {
+            message: 'Action forbidden! Request is already approved!'
+          }
+        });
+      }).catch(err => handleTableReadError(err, res));
   }
 }
 

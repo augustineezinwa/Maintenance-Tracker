@@ -1,203 +1,10 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../app';
-import { requests } from '../../dummydatabase/dummydatabase';
-import connect from '../../connections/connect';
 
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('Testing post request', () => {
-  it('should not update request if request title is missing or invalid', (done) => {
-    chai.request(app).put('/api/v1/users/requests/1')
-      .send({
-        resolved: 'success',
-        approved: 'fail',
-        rejected: 'fail',
-        message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'Request Title is invalid or empty'
-        });
-        done();
-      });
-  });
-  it('should not update request if message field is invalid or empty', (done) => {
-    chai.request(app).put('/api/v1/users/requests/1')
-      .send({
-        requestTitle: 'Neutral is naked',
-        resolved: 'success',
-        approved: 'fail',
-        rejected: 'success',
-        message: '',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'Message is invalid or empty'
-        });
-        done();
-      });
-  });
-});
-describe('Testing put request', () => {
-  it('should update particular request', (done) => {
-    chai.request(app).put('/api/v1/users/requests/1')
-      .send({
-        requestTitle: 'Electric fish is faulty!',
-        resolved: 'success',
-        approved: 'fail',
-        rejected: 'fail',
-        message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(200);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('success');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'Request was successfully updated',
-          oldRequest: {
-            id: 1,
-            requestTitle: 'Electric fish is faulty!',
-            resolved: 'success',
-            approved: 'fail',
-            rejected: 'fail',
-            message: 'My Electric fish is faulty, Come check it out',
-            userId: 1
-          }
-        });
-        done();
-      });
-  });
-  it('should not update particular request if request doesnt exist', (done) => {
-    chai.request(app).put('/api/v1/users/requests/5')
-      .send({
-        requestTitle: 'Electric fish is faulty!',
-        resolved: 'success',
-        approved: 'fail',
-        rejected: 'fail',
-        message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(404);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'Request was not found'
-        });
-        done();
-      });
-  });
-  it('should not update particular request if url is invalid', (done) => {
-    chai.request(app).put('/api/v1/users/requests/5$$$')
-      .send({
-        requestTitle: 'Electric fish is faulty!',
-        resolved: 'success',
-        approved: 'fail',
-        rejected: 'fail',
-        message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(404);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'url not recognized!'
-        });
-        done();
-      });
-  });
-  it(`should not update particular request if rejected 
-  field is supplied with strange string`, (done) => {
-    chai.request(app).put('/api/v1/users/requests/1')
-      .send({
-        requestTitle: 'Electric fish is faulty!',
-        resolved: 'success',
-        approved: 'fail',
-        rejected: 'donkey',
-        message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'The rejected status field can only be success or fail'
-        });
-        done();
-      });
-  });
-  it(`should not update particular request if approved 
-  field is supplied with strange string`, (done) => {
-    chai.request(app).put('/api/v1/users/requests/1')
-      .send({
-        requestTitle: 'Electric fish is faulty!',
-        resolved: 'success',
-        approved: 'fish',
-        rejected: 'fail',
-        message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'The approved status field can only be success or fail'
-        });
-        done();
-      });
-  });
-  it(`should not update particular request if approved 
-  field is supplied with strange string`, (done) => {
-    chai.request(app).put('/api/v1/users/requests/1')
-      .send({
-        requestTitle: 'Electric fish is faulty!',
-        resolved: 'flying %% donkey',
-        approved: 'fail',
-        rejected: 'fail',
-        message: 'My Electric fish is faulty, Come check it out',
-        userId: 1
-      })
-      .end((err, res) => {
-        should.not.exist(err);
-        res.should.have.status(400);
-        res.body.should.be.a('object');
-        res.body.status.should.eql('fail');
-        res.body.data.should.be.a('object');
-        res.body.data.should.be.eql({
-          message: 'The resolved status field can only be success or fail'
-        });
-        done();
-      });
-  });
-});
 describe('Testing get a request', () => {
   it('should get a request by id', (done) => {
     chai.request(app).get('/api/v1/users/requests/1')
@@ -495,7 +302,7 @@ describe('Testing get all request for a user', () => {
         res.body.should.be.a('object');
         res.body.status.should.eql('success');
         res.body.data.should.be.a('array');
-        res.body.data[0].should.be.eql({ 
+        res.body.data[0].should.be.eql({
           id: 1,
           requesttitle: 'Electric fish is faulty!',
           requesttype: 'maintenance',
@@ -519,7 +326,7 @@ describe('Testing get all request for a user', () => {
         res.body.should.be.a('object');
         res.body.status.should.eql('success');
         res.body.data.should.be.a('array');
-        res.body.data[0].should.be.eql({ 
+        res.body.data[0].should.be.eql({
           id: 1,
           requesttitle: 'Electric fish is faulty!',
           requesttype: 'maintenance',
@@ -543,6 +350,165 @@ describe('Testing get all request for a user', () => {
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
           message: 'No request found at this time!'
+        });
+        done();
+      });
+  });
+});
+
+describe('Testing update request api endpoint', () => {
+  it('should not update request if user fails to provide token', (done) => {
+    chai.request(app).put('/api/v1/users/requests/1')
+      .send({
+        requestTitle: 'Electric fish is faulty',
+        requestType: 'maintenance',
+        message: 'My Electric fish is faulty, Come check it out',
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(403);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Forbidden!, please sign up or login!'
+        });
+        done();
+      });
+  });
+  it('should not update request if message field is invalid or empty', (done) => {
+    chai.request(app).put('/api/v1/users/requests/1')
+      .send({
+        requestTitle: 'Neutral is naked',
+        requestType: 'repair',
+        message: '',
+      })
+      .send({ token: process.env.USER_TOKEN })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Message is invalid or empty'
+        });
+        done();
+      });
+  });
+});
+describe('Testing put request', () => {
+  it('should not update particular request if request type is invalid', (done) => {
+    chai.request(app).put('/api/v1/users/requests/1')
+      .send({
+        requestTitle: 'Electric fish is faulty!',
+        requestType: 'donkey',
+        message: 'My Electric fish is faulty, Come check it out'
+      })
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Request type can only be maintenance or repair'
+        });
+        done();
+      });
+  });
+  it('should not update particular request if request doesnt exist', (done) => {
+    chai.request(app).put('/api/v1/users/requests/5')
+      .send({
+        requestTitle: 'Electric fish is faulty!',
+        message: 'My Electric fish is faulty, Come check it out'
+      })
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Cant update! Cant find request!'
+        });
+        done();
+      });
+  });
+  it('should not update particular request if url is invalid', (done) => {
+    chai.request(app).put('/api/v1/users/requests/5$$$')
+      .send({
+        requestTitle: 'Electric fish is faulty!',
+        message: 'My Electric fish is faulty, Come check it out'
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'url not recognized!'
+        });
+        done();
+      });
+  });
+  it(`should not update particular request if message is empty
+  field is supplied with strange string`, (done) => {
+    chai.request(app).put('/api/v1/users/requests/1')
+      .send({
+        requestTitle: 'Electric fish is faulty!',
+        requestType: 'repair',
+        message: '',
+      })
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(400);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Message is invalid or empty'
+        });
+        done();
+      });
+  });
+  it('should update particular request with correct reqeust fields', (done) => {
+    chai.request(app).put('/api/v1/users/requests/1')
+      .send({
+        requestTitle: 'Electric Cooker is faulty!',
+        requestType: 'maintenance',
+        message: 'My Electric cook is faulty, Come check it out'
+      })
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'request was updated successfully',
+          request: {
+            id: 1,
+            requestTitle: 'Electric Cooker is faulty!',
+            requestType: 'maintenance',
+            message: 'My Electric cook is faulty, Come check it out',
+            approved: 'pending',
+            rejected: 'pending',
+            resolved: 'pending'
+          }
         });
         done();
       });
