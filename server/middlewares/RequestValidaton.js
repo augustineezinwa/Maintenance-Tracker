@@ -42,7 +42,7 @@ class RequestValidation {
     *
     * @returns {object} - status Message and the particular request by id.
     *
-    * @description This method gets a request by id in maintenance tracker
+    * @description This method validates a request title in maintenance tracker
     * @memberOf RequestController
     */
   static validateRequestTitle(req, res, next) {
@@ -69,7 +69,32 @@ class RequestValidation {
     *
     * @returns {object} - status Message and the particular request by id.
     *
-    * @description This method gets a request by id in maintenance tracker
+    * @description This method vaidates a request type in maintenance tracker
+    * @memberOf RequestController
+    */
+  static validateRequestType(req, res, next) {
+    let { requestType } = req.body;
+    requestType = typeof requestType === 'string' ? requestType.trim() : '';
+    if ((requestType.toLowerCase() !== 'maintenance') && (requestType.toLowerCase() !== 'repair')) {
+      return res.status(400).json({
+        status: 'fail',
+        data: {
+          message: 'Request type can only be maintenance or repair'
+        }
+      });
+    }
+    return next();
+  }
+  /**
+    * @static
+    *
+    * @param {object} req - The request payload sent to the router
+    * @param {object} res - The response payload sent back from the controller
+    * @param {function} next -The call back function that calls the next router
+    *
+    * @returns {object} - returns to the next router
+    *
+    * @description This method validates a request message
     * @memberOf RequestController
     */
   static validateRequestMessage(req, res, next) {
