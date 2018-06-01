@@ -822,10 +822,6 @@ describe('Testing put request', () => {
   it('Admin should not approve a particular request if request has already been approved', (done) => {
     chai.request(app).put('/api/v1/requests/1/approve')
       .send({
-        requestTitle: 'Electric fish is faulty!',
-        message: 'My Electric fish is faulty, Come check it out'
-      })
-      .send({
         token: process.env.MASTER_TOKEN
       })
       .end((err, res) => {
@@ -857,6 +853,49 @@ describe('Testing put request', () => {
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
           message: 'Action forbidden! Request is already approved!'
+        });
+        done();
+      });
+  });
+  it('Admin should be able to disapprove a particular request provided request exists and approved is pending', (done) => {
+    chai.request(app).put('/api/v1/requests/2/disapprove')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'This request has been disapproved successfully',
+          request: {
+            id: 2,
+            requestTitle: 'Electric cooker is faulty!',
+            requestType: 'maintenance',
+            message: 'My Electric fish is faulty, Come check it out',
+            approved: 'fail',
+            rejected: 'success',
+            resolved: 'pending'
+          }
+        });
+        done();
+      });
+  });
+  it('Admin should not be able to disapprove a particular request if request has already been approved', (done) => {
+    chai.request(app).put('/api/v1/requests/2/disapprove')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(403);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Action forbidden! This request has already been approved or rejected.'
         });
         done();
       });
