@@ -28,6 +28,20 @@ const updateRequestData = (requestTitle, requestType, message, id, requestId) =>
   };
   return query;
 };
+const updateApprovedRequestData = (requestId) => {
+  const query = {
+    text: 'UPDATE requests SET rejected = $1, approved = $2 WHERE requests.id = $3 RETURNING *',
+    values: ['fail', 'success', requestId]
+  };
+  return query;
+};
+const updateDisapprovedRequestData = (requestId) => {
+  const query = {
+    text: 'UPDATE requests SET rejected = $1, approved = $2 WHERE requests.id = $3 RETURNING *',
+    values: ['success', 'fail', requestId]
+  };
+  return query;
+};
 const findAllrequestsById = (id) => {
   const query = {
     text: 'SELECT * FROM requests WHERE requests.userid = $1',
@@ -60,5 +74,6 @@ const findARequest = (id) => {
 export {
   createRequestData, createRequestTable,
   findAllrequestsById, destroyRequestTable,
-  findRequestById, updateRequestData, findAllrequests, findARequest
+  findRequestById, updateRequestData, findAllrequests, findARequest,
+  updateApprovedRequestData, updateDisapprovedRequestData
 };

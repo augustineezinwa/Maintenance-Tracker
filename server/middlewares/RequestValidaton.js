@@ -1,7 +1,7 @@
 import InputFieldValidaton from '../helper/InputFieldValidaton';
 import connect from '../connections/connect';
 import ErrorHandler from '../helper/ErrorHandler';
-import { findRequestById } from '../helper/instructions/requestInstructions';
+import { findRequestById, findARequest } from '../helper/instructions/requestInstructions';
 
 const { validateRequestMessage, validateStatus } = InputFieldValidaton;
 const { handleTableReadError } = ErrorHandler;
@@ -198,7 +198,36 @@ class RequestValidation {
         });
       }).catch(err => handleTableReadError(err, res));
   }
+  /**
+    * @static
+    *
+    * @param {object} req - The request payload sent to the router
+    * @param {object} res - The response payload sent back from the controller
+    * @param {function} next -The call back function that calls the next router
+    *
+    * @returns {object} - status message or a callback to the next middleware
+    *
+    * @description This method checks for the presence of a request in maintenance
+    * tracker before admin's approval
+    * @memberOf RequestController
+    */
+  static checkRequest(req, res, next) {
+    const { requestId } = req.params;
+    connect.query(findARequest(requestId))
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return res.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'No request found at this time'
+            }
+          });
+        }
+        req.approved = data.rows[0].approved;
+        req.rejected = data.rows[0].rejected;
+        return next();
+      });
+  }
 }
-
 export default RequestValidation;
 
