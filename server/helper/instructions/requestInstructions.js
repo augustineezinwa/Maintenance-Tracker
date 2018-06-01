@@ -37,8 +37,15 @@ const updateApprovedRequestData = (requestId) => {
 };
 const updateDisapprovedRequestData = (requestId) => {
   const query = {
-    text: 'UPDATE requests SET rejected = $1, approved = $2 WHERE requests.id = $3 RETURNING *',
-    values: ['success', 'fail', requestId]
+    text: 'UPDATE requests SET rejected = $1, approved = $2, resolved = $3 WHERE requests.id = $4 RETURNING *',
+    values: ['success', 'fail', 'fail', requestId]
+  };
+  return query;
+};
+const updateResolvedRequestData = (requestId) => {
+  const query = {
+    text: 'UPDATE requests SET resolved = $1 WHERE requests.id = $2 RETURNING *',
+    values: ['success', requestId]
   };
   return query;
 };
@@ -75,5 +82,5 @@ export {
   createRequestData, createRequestTable,
   findAllrequestsById, destroyRequestTable,
   findRequestById, updateRequestData, findAllrequests, findARequest,
-  updateApprovedRequestData, updateDisapprovedRequestData
+  updateApprovedRequestData, updateDisapprovedRequestData, updateResolvedRequestData
 };
