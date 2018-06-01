@@ -772,4 +772,93 @@ describe('Testing put request', () => {
         done();
       });
   });
+  it('Admin should be able to approve a particular request provided request exists and approved is pending', (done) => {
+    chai.request(app).put('/api/v1/requests/1/approve')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'request was approved successfully',
+          request: {
+            id: 1,
+            requestTitle: 'Electric Cooker is faulty!',
+            requestType: 'maintenance',
+            message: 'My Electric cook is faulty, Come check it out',
+            approved: 'success',
+            rejected: 'fail',
+            resolved: 'pending'
+          }
+        });
+        done();
+      });
+  });
+  it('Admin should not approve a particular request if request doesnt exist', (done) => {
+    chai.request(app).put('/api/v1/requests/5/approve')
+      .send({
+        requestTitle: 'Electric fish is faulty!',
+        message: 'My Electric fish is faulty, Come check it out'
+      })
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'No request found at this time'
+        });
+        done();
+      });
+  });
+  it('Admin should not approve a particular request if request has already been approved', (done) => {
+    chai.request(app).put('/api/v1/requests/1/approve')
+      .send({
+        requestTitle: 'Electric fish is faulty!',
+        message: 'My Electric fish is faulty, Come check it out'
+      })
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(403);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Action forbidden! This request has already been approved or rejected.'
+        });
+        done();
+      });
+  });
+  it('User should not update particular request if request has been approved by admin', (done) => {
+    chai.request(app).put('/api/v1/users/requests/1')
+      .send({
+        requestTitle: 'Electric fish is faulty!',
+        message: 'My Electric cooker is faulty, Come check it out'
+      })
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(403);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Action forbidden! Request is already approved!'
+        });
+        done();
+      });
+  });
 });

@@ -32,6 +32,7 @@ describe('Testing user validation', () => {
     };
     chai.request(app).post('/api/v1/auth/signup')
       .send(newUser).end((err, res) => {
+        should.not.exist(err);
         res.should.have.status(422);
         res.body.should.be.a('object');
         res.body.should.have.property('status').eql('fail');

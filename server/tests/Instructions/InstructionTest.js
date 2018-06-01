@@ -11,7 +11,9 @@ import {
   findRequestById,
   updateRequestData,
   findAllrequests,
-  findARequest
+  findARequest,
+  updateApprovedRequestData,
+  updateDisapprovedRequestData
 } from '../../helper/instructions/requestInstructions';
 
 it('testing sql instruction for dropping users table', (done) => {
@@ -42,6 +44,22 @@ it('testing sql instruction for updating request', (done) => {
     .eql(`UPDATE requests SET requestTitle = $1, requestType = $2, message = $3 
     WHERE requests.userId =$4 AND requests.id = $5 RETURNING *`);
   output.values.should.be.eql(['faulty tv', 'maintenance', 'come fix my tv', 1, 2]);
+  done();
+});
+it('testing sql instruction for updating approved request', (done) => {
+  const output = updateApprovedRequestData(1);
+  output.should.be.a('object');
+  output.text.should.be
+    .eql('UPDATE requests SET rejected = $1, approved = $2 WHERE requests.id = $3 RETURNING *');
+  output.values.should.be.eql(['fail', 'success', 1]);
+  done();
+});
+it('testing sql instruction for updating disapproved request', (done) => {
+  const output = updateDisapprovedRequestData(1);
+  output.should.be.a('object');
+  output.text.should.be
+    .eql('UPDATE requests SET rejected = $1, approved = $2 WHERE requests.id = $3 RETURNING *');
+  output.values.should.be.eql(['success', 'fail', 1]);
   done();
 });
 it('testing sql instruction for getting all requests', (done) => {
