@@ -15,8 +15,17 @@ describe('Testing server setup', () => {
         done();
       });
   });
-    it('should test that requests table is setup', (done) => {
+  it('should test that requests table is setup', (done) => {
     chai.request(app).get('/api/v1/database/2')
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.status.should.be.eql('success');
+        done();
+      });
+  });
+  it('should seed the admin into the user table', (done) => {
+    chai.request(app).get('/api/v1/database/admin')
       .end((err, res) => {
         should.not.exist(err);
         res.should.have.status(200);

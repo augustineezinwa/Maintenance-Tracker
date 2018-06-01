@@ -35,7 +35,12 @@ const findAllrequestsById = (id) => {
   };
   return query;
 };
-
+const findAllrequests = () => {
+  const query = {
+    text: 'SELECT * FROM requests'
+  };
+  return query;
+};
 const findRequestById = (id, userId) => {
   const query = {
     text: 'SELECT * FROM requests WHERE requests.userid = $1 AND requests.id = $2',
@@ -44,8 +49,16 @@ const findRequestById = (id, userId) => {
   return query;
 };
 
+const findARequest = (id) => {
+  const query = {
+    text: 'SELECT * FROM requests WHERE requests.id = $1',
+    values: [id]
+  };
+  return query;
+};
+
 export {
   createRequestData, createRequestTable,
   findAllrequestsById, destroyRequestTable,
-  findRequestById, updateRequestData
+  findRequestById, updateRequestData, findAllrequests, findARequest
 };

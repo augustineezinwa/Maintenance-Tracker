@@ -9,7 +9,9 @@ import {
   createRequestData,
   findAllrequestsById,
   findRequestById,
-  updateRequestData
+  updateRequestData,
+  findAllrequests,
+  findARequest
 } from '../../helper/instructions/requestInstructions';
 
 it('testing sql instruction for dropping users table', (done) => {
@@ -48,6 +50,21 @@ it('testing sql instruction for getting all requests', (done) => {
   output.text.should.be
     .eql('SELECT * FROM requests WHERE requests.userid = $1');
   output.values.should.be.eql([1]);
+  done();
+});
+it('testing sql instruction for getting a requests by its id', (done) => {
+  const output = findARequest(1);
+  output.should.be.a('object');
+  output.text.should.be
+    .eql('SELECT * FROM requests WHERE requests.id = $1');
+  output.values.should.be.eql([1]);
+  done();
+});
+it('testing sql instruction for getting all requests in request table', (done) => {
+  const output = findAllrequests();
+  output.should.be.a('object');
+  output.text.should.be
+    .eql('SELECT * FROM requests');
   done();
 });
 it('testing sql instruction for getting a particular request', (done) => {
