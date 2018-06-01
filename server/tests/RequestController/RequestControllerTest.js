@@ -80,6 +80,25 @@ describe('Testing get a request', () => {
   });
 });
 describe('Testing get all request', () => {
+  it('should login admin and obtain token', (done) => {
+    const newUser = {
+      firstName: 'Augustine',
+      lastName: 'ezinwa',
+      email: 'augustineezinwa@gmail.com',
+      password: process.env.MASTER_PASSWORD,
+      confirmpassword: process.env.MASTER_PASSWORD
+    };
+    chai.request(app).post('/api/v1/auth/login')
+      .send(newUser).end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.should.have.property('status').eql('success');
+        res.body.data.should.have.property('message').eql('you are logged in');
+        res.body.data.should.have.property('token');
+        process.env.MASTER_TOKEN = res.body.data.token;
+        done();
+      });
+  });
   it('should sign up user and obtain token', (done) => {
     const newUser = {
       firstName: 'Augustine',
@@ -99,7 +118,7 @@ describe('Testing get all request', () => {
         done();
       });
   });
-  it('should get a all requests', (done) => {
+  it('should return error message if no request was found', (done) => {
     chai.request(app).get('/api/v1/users/requests')
       .send({
         token: process.env.USER_TOKEN
@@ -111,6 +130,52 @@ describe('Testing get all request', () => {
         res.body.status.should.eql('fail');
         res.body.data.should.have.property('message');
         res.body.data.message.should.be.eql('No request found at this time');
+        done();
+      });
+  });
+  it('should return error message to admin if no request was found', (done) => {
+    chai.request(app).get('/api/v1/requests')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.have.property('message');
+        res.body.data.message.should.be.eql('No request found at this time');
+        done();
+      });
+  });
+  it('should return error message to admin if no request was found by id', (done) => {
+    chai.request(app).get('/api/v1/requests/8')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.have.property('message');
+        res.body.data.message.should.be.eql('No request found at this time');
+        done();
+      });
+  });
+
+  it('should return error message if no request was found', (done) => {
+    chai.request(app).get('/api/v1/users/requests/8')
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.have.property('message');
+        res.body.data.message.should.be.eql('No request found at this time!');
         done();
       });
   });
@@ -146,6 +211,158 @@ describe('Testing post request', () => {
         done();
       });
   });
+  it('should post a request with a token', (done) => {
+    chai.request(app).post('/api/v1/users/requests')
+      .send({
+        requestTitle: 'Electric cooker is faulty!',
+        requestType: 'maintenance',
+        message: 'My Electric fish is faulty, Come check it out',
+      })
+      .send({ token: process.env.USER_TOKEN })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(201);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'request was created successfully',
+          request: {
+            id: 2,
+            requestTitle: 'Electric cooker is faulty!',
+            requestType: 'maintenance',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric fish is faulty, Come check it out'
+          }
+        });
+        done();
+      });
+  });
+  it('should return all requests made by a user', (done) => {
+    chai.request(app).get('/api/v1/requests')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('array');
+        res.body.data.should.be.eql([
+          {
+            id: 1,
+            requesttitle: 'Electric fish is faulty!',
+            requesttype: 'maintenance',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric fish is faulty, Come check it out',
+            userid: 2
+          },
+          {
+            id: 2,
+            requesttitle: 'Electric cooker is faulty!',
+            requesttype: 'maintenance',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric fish is faulty, Come check it out',
+            userid: 2
+          }
+        ]);
+        done();
+      });
+  });
+  it('should return all requests made by a user', (done) => {
+    chai.request(app).get('/api/v1/users/requests')
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('array');
+        res.body.data.should.be.eql([
+          {
+            id: 1,
+            requesttitle: 'Electric fish is faulty!',
+            requesttype: 'maintenance',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric fish is faulty, Come check it out',
+            userid: 2
+          },
+          {
+            id: 2,
+            requesttitle: 'Electric cooker is faulty!',
+            requesttype: 'maintenance',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric fish is faulty, Come check it out',
+            userid: 2
+          }
+        ]);
+        done();
+      });
+  });
+  it('Admin should be able to get a request by id made by a user', (done) => {
+    chai.request(app).get('/api/v1/requests/2')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('array');
+        res.body.data.should.be.eql([
+          {
+            id: 2,
+            requesttitle: 'Electric cooker is faulty!',
+            requesttype: 'maintenance',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric fish is faulty, Come check it out',
+            userid: 2
+          }
+        ]);
+        done();
+      });
+  });
+  it('should get a request by id made by a user', (done) => {
+    chai.request(app).get('/api/v1/users/requests/2')
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.eql([
+          {
+            id: 2,
+            requesttitle: 'Electric cooker is faulty!',
+            requesttype: 'maintenance',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric fish is faulty, Come check it out',
+            userid: 2
+          }
+        ]);
+        done();
+      });
+  });
   it('should not post a particular request without a token', (done) => {
     chai.request(app).post('/api/v1/users/requests')
       .send({
@@ -169,6 +386,48 @@ describe('Testing post request', () => {
         done();
       });
   });
+  it('should not post a particular request without a token', (done) => {
+    chai.request(app).post('/api/v1/users/requests')
+      .send({
+        requestTitle: 'Electric fish is faulty!',
+        resolved: 'success',
+        approved: 'fail',
+        rejected: 'fail',
+        message: 'My Electric fish is faulty, Come check it out',
+        userId: 1
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(403);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Forbidden!, please sign up or login!'
+        });
+
+        done();
+      });
+  });
+  it('admin should not get all particular request without master token', (done) => {
+    chai.request(app).get('/api/v1/requests')
+      .send({
+        token: process.env.USER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(401);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Unauthorized! You dont possess Admin privileges!'
+        });
+
+        done();
+      });
+  });
+
   it('should not post request if request title is missing or invalid', (done) => {
     chai.request(app).post('/api/v1/users/requests')
       .send({
@@ -310,7 +569,7 @@ describe('Testing get all request for a user', () => {
           approved: 'pending',
           rejected: 'pending',
           message: 'My Electric fish is faulty, Come check it out',
-          userid: 1,
+          userid: 2,
         });
         done();
       });
@@ -334,7 +593,7 @@ describe('Testing get all request for a user', () => {
           approved: 'pending',
           rejected: 'pending',
           message: 'My Electric fish is faulty, Come check it out',
-          userid: 1,
+          userid: 2,
         });
         done();
       });

@@ -3,10 +3,11 @@ import RequestController from '../controllers/RequestController';
 import RequestValidation from '../middlewares/RequestValidaton';
 import Authentication from '../middlewares/Authentication';
 
-const { secureRoute } = Authentication;
+const { secureRoute, secureMasterRoute } = Authentication;
 const {
   createRequest, getRequestById,
-  getAllRequests, updateRequest
+  getAllRequests, updateRequest, getAllRequestsByAdmin,
+  getARequestByAdmin
 } = RequestController;
 const {
   validateUrl,
@@ -22,6 +23,8 @@ requestRouter.post(
   validateRequestType, validateRequestMessage, createRequest
 );
 requestRouter.get('/users/requests/:requestId', validateUrl, secureRoute, getRequestById);
+requestRouter.get('/requests', secureRoute, secureMasterRoute, getAllRequestsByAdmin);
+requestRouter.get('/requests/:requestId', secureRoute, secureMasterRoute, getARequestByAdmin);
 requestRouter.get('/users/requests', secureRoute, getAllRequests);
 requestRouter.put(
   '/users/requests/:requestId', validateUrl, secureRoute, validateRequestUpdate, validateRequestTitle,

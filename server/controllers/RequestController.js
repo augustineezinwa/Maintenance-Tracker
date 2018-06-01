@@ -1,7 +1,7 @@
 import connect from '../connections/connect';
 import {
   findAllrequestsById, findRequestById, createRequestData,
-  updateRequestData
+  updateRequestData, findAllrequests, findARequest
 } from '../helper/instructions/requestInstructions';
 import ErrorHandler from '../helper/ErrorHandler';
 
@@ -57,6 +57,65 @@ class RequestController {
   static getAllRequests(req, res) {
     const { id } = req;
     connect.query(findAllrequestsById(id))
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return res.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'No request found at this time'
+            }
+          });
+        }
+        return res.status(200).json({
+          status: 'success',
+          data: data.rows
+        });
+      })
+      .catch(err => handleTableReadError(err, res));
+  }
+  /**
+        * @static
+        *
+        * @param {object} req - The request payload sent to the router
+        * @param {object} res - The response payload sent back from the controller
+        *
+        * @returns {object} - status Message and all requests in Maintenance-Tracker
+        *
+        * @description This method gets all requests in maintenance tracker
+        * @memberOf RequestController
+        */
+  static getAllRequestsByAdmin(req, res) {
+    connect.query(findAllrequests())
+      .then((data) => {
+        if (data.rows.length < 1) {
+          return res.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'No request found at this time'
+            }
+          });
+        }
+        return res.status(200).json({
+          status: 'success',
+          data: data.rows
+        });
+      })
+      .catch(err => handleTableReadError(err, res));
+  }
+  /**
+        * @static
+        *
+        * @param {object} req - The request payload sent to the router
+        * @param {object} res - The response payload sent back from the controller
+        *
+        * @returns {object} - status Message and all requests in Maintenance-Tracker
+        *
+        * @description This method gets all requests in maintenance tracker
+        * @memberOf RequestController
+        */
+  static getARequestByAdmin(req, res) {
+    const { requestId } = req.params;
+    connect.query(findARequest(requestId))
       .then((data) => {
         if (data.rows.length < 1) {
           return res.status(404).json({
