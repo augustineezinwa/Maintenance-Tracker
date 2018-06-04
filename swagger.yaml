@@ -1,0 +1,517 @@
+swagger: '2.0'
+info:
+  description: This is a Maintenance -Tracker web application.
+  version: 1.0.0
+  title: Maintenance-Tracker Web  App
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: augustineezinwa@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: mt-tracker.herokuapp.com
+basePath: /api/v1
+tags:
+  - name: Users
+    description: API for user
+  - name: Requests
+    description: API for requests
+  - name: Settings
+    description: API for Maintenance-Tracker settings
+schemes:
+  - https
+paths:
+  /auth/signup:
+    post:
+      tags:
+        - Users
+      summary: Add a new user
+      description: Registers a new user into Maintenance-Tracker
+      operationId: addUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: A new user to register
+          required: true
+          schema:
+            $ref: '#/definitions/UserSignUp'
+      responses:
+        '201':
+          description: You signed up successfully
+        '409':
+          description: email is already in use.
+        '422':
+          description: Errors! Invalid parameters.
+  /auth/login:
+    post:
+      tags:
+        - Users
+      summary: Login User
+      description: Logins a registered user into Maintenance-Tracker
+      operationId: loginUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: Logins a registered user
+          required: true
+          schema:
+            $ref: '#/definitions/UserLogin'
+      responses:
+        '200':
+          description: you are logged in.
+        '401':
+          description: password is incorrect.
+        '404':
+          description: you cant login at this time, email doesnt exist
+  /users/requests:
+    post:
+      tags:
+        - Requests
+      summary: posts a request for a user
+      description: Creates a request in Maintenance-Tracker
+      operationId: createNewRequest
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          description: Creating a new request in Maintenance-Tracker
+          required: true
+          schema:
+            $ref: '#/definitions/CreateRequestModel'
+        - in: path
+          name: token
+          description: you need a token to create a request
+          required: true
+          type: string
+      responses:
+        '201':
+          description: request was created successfully
+        '403':
+          description: No token!, Action forbidden! please sign up or login
+        '401':
+          description: Unauthorized! Invalid credentials
+        '400':
+          description: 'Validation Errors!: Invalid input request fields!'
+    get:
+      tags:
+        - Requests
+      summary: gets all requests for a particular user
+      description: This can only be done by a logged in user.
+      operationId: getAllrequestsForAuser
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: token
+          description: you need a token to fetch all requests
+          required: true
+          type: string
+      responses:
+        '200':
+          description: success! 
+        '401':
+          description: Unauthorized Invalid credentials
+        '403':
+          description: Action forbidden! please sign up or login
+        '404':
+          description: No request found at this time
+  '/users/requests/{requestId}':
+    get:
+      tags:
+        - Requests
+      summary: Gets a request that belongs to a user by its id parameter
+      description: This can only be done by a logged in user
+      operationId: getRequestById
+      produces:
+        - application/json
+      parameters:
+        - name: requestId
+          in: path
+          description: Id to fetch the request
+          required: true
+          type: integer
+        - in: path
+          name: token
+          description: you need a token to fetch this request
+          required: true
+          type: string
+      responses:
+        '200':
+          description: success!
+          schema:
+            $ref: '#/definitions/RequestFoundModel'
+        '404':
+          description: No request found at this time!
+        '401':
+          description: Unauthorized Invalid credentials
+        '403':
+          description: Action forbidden! please sign up or login
+    put:
+      tags:
+        - Requests
+      summary: Updates a request
+      description: This can only be done by the logged in user.
+      operationId: updateRequestById
+      produces:
+        - application/json
+      parameters:
+        - name: requestId
+          in: path
+          description: request that needs to be updated
+          required: true
+          type: integer
+        - name: token
+          in: path
+          description: you need a token to update this request
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: business Object to database
+          required: true
+          schema:
+            $ref: '#/definitions/CreateRequestModel'
+      responses:
+        '200':
+          description: request was updated successfully
+        '404':
+          description: No request found at this time
+        '401':
+          description: Unauthorized Invalid credentials
+        '403':
+          description: Action forbidden! please sign up or login
+    delete:
+      tags:
+        - Requests
+      summary: Delete a request by its id
+      description: This can only be done by the logged in user.
+      operationId: deleteRequestById
+      produces:
+        - application/json
+      parameters:
+        - name: requestId
+          in: path
+          description: The id of the request that needs to be deleted
+          required: true
+          type: integer
+        - name: token
+          in: path
+          description: you need a token to fetch delete a request
+          required: true
+          type: string
+      responses:
+        '206':
+          description: No Content
+        '401':
+          description: Unauthorized Invalid credentials
+        '403':
+          description: Action forbidden! please sign up or login
+        '404':
+          description: No request found at this time
+  /requests:
+    get:
+      tags:
+        - Requests
+      summary: This gets all the requests in Maintenance-Tracker
+      description: This route is only availabe to the admin
+      operationId: getAllRequests
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: path
+          description: you need a token to fetch all request
+          required: true
+          type: string
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/AllRequestListModel'
+        '401':
+          description: Unauthorized Invalid credentials
+        '403':
+          description: Action forbidden! please sign up or login
+        '404':
+          description: No request found at this time
+  '/request/{requestId}/approve':
+     put:
+      tags:
+        - Requests
+      summary: This approves a particular request in Maintenance-Tracker
+      description: This route is available only to the admin
+      operationId: AllBusinessReview
+      produces:
+        - application/json
+      parameters:
+        - name: requestId
+          in: path
+          description: The id of the particular request that needs to be approved
+          required: true
+          type: integer
+        - name: token
+          in: path
+          description: you need a token to update this request
+          required: true
+          type: string
+      responses:
+        '200':
+          description: request has been approved successfully.
+          schema:
+            $ref: '#/definitions/RequestFoundModel'
+        '404':
+          description: request not found at this time
+        '401':
+          description: Unauthorized Invalid credentials
+        '403':
+          description: Action forbidden! please sign up or login
+        '400':
+          description: Request validation errors!
+  
+  '/request/{requestId}/disapprove':
+    put:
+      tags:
+        - Requests
+      summary: This disapproves a particular request in Maintenance-Tracker
+      description: This route is available only to the admin
+      operationId: disapproveRequest
+      produces:
+        - application/json
+      parameters:
+      - name: requestId
+        in: path
+        description: The id of the particular request that needs to be disapproved
+        required: true
+        type: integer
+      - name: token
+        in: path
+        description: you need a token to fetch all request
+        required: true
+        type: string
+      responses:
+        '200':
+          description: request has been disapproved successfully.
+          schema:
+            $ref: '#/definitions/RequestFoundModel'
+        '404':
+          description: request not found at this time
+        '401':
+          description: Unauthorized Invalid credentials
+        '403':
+          description: Action forbidden! please sign up or login
+        '400':
+          description: Request validation errors!
+  '/request/{requestId}/resolve':
+    put:
+      tags:
+        - Requests
+      summary: This resolves a particular request in Maintenance-Tracker
+      description: This route is available only to the admin
+      operationId: resolveRequest
+      produces:
+        - application/json
+      parameters:
+      - name: requestId
+        in: path
+        description: The id of the particular request that needs to be resolved
+        required: true
+        type: integer
+      - name: token
+        in: path
+        description: you need a token to fetch all request
+        required: true
+        type: string
+      responses:
+        '200':
+          description: request has been resolved successfully.
+          
+        '404':
+          description: request not found at this time
+        '401':
+          description: Unauthorized Invalid credentials
+        '403':
+          description: Action forbidden! please sign up or login
+        '400':
+          description: Request validation errors!
+  /database:
+    put:
+      tags:
+        - Settings
+      summary: resets the user table in Maintenance-Tracker
+      description: This route is strictly avaliable only to the admin
+      operationId: resetUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: Admin master password is required to access this route
+          required: true
+          schema:
+            $ref: '#/definitions/resetModel'
+      responses:
+        '200':
+          description: success
+        '401':
+          description: Unauthorized!
+  /database/2:
+    put:
+      tags:
+        - Settings
+      summary: resets the request table in Maintenance-Tracker.
+      description: This route is strictly avaliable only to the admin
+      operationId: resetRequest
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: Admin master password is required to access this route
+          required: true
+          schema:
+            $ref: '#/definitions/resetModel'
+      responses:
+        '201':
+          description: You signed up successfully
+        '409':
+          description: email is already in use.
+        '422':
+          description: Errors! Invalid parameters.
+  /database/admin:
+    put:
+      tags:
+        - Settings
+      summary: creates admin for Maintenance-Tracker
+      description: This route is strictly avaliable only to the admin
+      operationId: resetUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: A new user to register
+          required: true
+          schema:
+            $ref: '#/definitions/resetModel'
+      responses:
+        '200':
+          description: success
+        '401':
+          description: Unauthorized!
+definitions:
+  UserSignUp:
+    type: object
+    required:
+      - firstName
+      - lastName
+      - email
+      - password
+      - confrimpassword
+    properties:
+      firstName:
+        type: string
+        uniqueItems: false
+      lastName:
+        type: string
+        uniqueItems: false
+      email:
+        type: string
+        uniqueItems: true
+      password:
+        type: string
+        uniqueItems: true
+      confirmpassword:
+        type: string
+        uniqueItems: true
+  UserLogin:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        uniqueItems: true
+      password:
+        type: string
+        uniqueItems: true
+  CreateRequestModel:
+    type: object
+    required:
+      - requestTitle
+      - requestType
+      - message
+    properties:
+      requestTitle:
+        type: string
+        uniqueItems: true
+      requestType:
+        type: string
+        uniqueItems: true
+      message:
+        type: string
+        uniqueItems: false
+  RequestFoundModel:
+    type: object
+    properties:
+      id:
+        type: integer
+      requestTite:
+        type: string
+      requestType:
+        type: string
+      message:
+        type: string
+      approved:
+        type: string
+      rejected:
+        type: string
+      resolved:
+        type: string
+      userId:
+        type: integer
+  resetModel:
+    type: object
+    required:
+      - masterpassword
+    properties:
+      masterpassword:
+        type: string
+  AllRequestListModel:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+      requestList:
+        type: array
+        request:
+          type: object
+          properties:
+            id:
+              type: integer
+            requestTite:
+              type: string
+            requestType:
+              type: string
+            message:
+              type: string
+            userId:
+              type: integer
+        
