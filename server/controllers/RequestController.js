@@ -2,7 +2,7 @@ import connect from '../connections/connect';
 import {
   findAllrequestsById, findRequestById, createRequestData,
   updateRequestData, findAllrequests, findARequest, updateApprovedRequestData,
-  updateDisapprovedRequestData
+  updateDisapprovedRequestData, updateResolvedRequestData
 } from '../helper/instructions/requestInstructions';
 import ErrorHandler from '../helper/ErrorHandler';
 
@@ -271,6 +271,47 @@ class RequestController {
           status: 'success',
           data: {
             message: 'This request has been disapproved successfully',
+            request: {
+              id: data.rows[0].id,
+              requestTitle: data.rows[0].requesttitle,
+              requestType: data.rows[0].requesttype,
+              message: data.rows[0].message,
+              approved: data.rows[0].approved,
+              rejected: data.rows[0].rejected,
+              resolved: data.rows[0].resolved
+            }
+          }
+        });
+      });
+  }
+  /**
+* @static
+*
+* @param {object} req - The request payload sent to the router
+* @param {object} res - The response payload sent back from the controller
+*
+* @returns {object} - status Message or the resolved request object.
+*
+* @description This method allows the admin to resolve a request in maintenance tracker
+* @memberOf RequestController
+*/
+  static resolveRequest(req, res) {
+    const { requestId } = req.params;
+    const { approved, rejected, resolved } = req;
+    if ((approved === 'pending' && rejected === 'pending') || resolved === 'fail') {
+      return res.status(403).json({
+        status: 'fail',
+        data: {
+          message: 'Action forbidden! You cant resolve an unapproved request!.'
+        }
+      });
+    }
+    connect.query(updateResolvedRequestData(requestId))
+      .then((data) => {
+        res.status(200).json({
+          status: 'success',
+          data: {
+            message: 'This request has been resolved successfully',
             request: {
               id: data.rows[0].id,
               requestTitle: data.rows[0].requesttitle,

@@ -877,7 +877,7 @@ describe('Testing put request', () => {
             message: 'My Electric fish is faulty, Come check it out',
             approved: 'fail',
             rejected: 'success',
-            resolved: 'pending'
+            resolved: 'fail'
           }
         });
         done();
@@ -896,6 +896,49 @@ describe('Testing put request', () => {
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
           message: 'Action forbidden! This request has already been approved or rejected.'
+        });
+        done();
+      });
+  });
+  it('Admin should not be able to resolve a particular request if request has already been disapproved', (done) => {
+    chai.request(app).put('/api/v1/requests/2/resolve')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(403);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Action forbidden! You cant resolve an unapproved request!.'
+        });
+        done();
+      });
+  });
+  it('Admin should be able to resolve a particular request provided request exists and is approved', (done) => {
+    chai.request(app).put('/api/v1/requests/1/resolve')
+      .send({
+        token: process.env.MASTER_TOKEN
+      })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(200);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'This request has been resolved successfully',
+          request: {
+            id: 1,
+            requestTitle: 'Electric Cooker is faulty!',
+            requestType: 'maintenance',
+            message: 'My Electric cook is faulty, Come check it out',
+            approved: 'success',
+            rejected: 'fail',
+            resolved: 'success'
+          }
         });
         done();
       });

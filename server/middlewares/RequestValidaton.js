@@ -225,6 +225,7 @@ class RequestValidation {
         }
         req.approved = data.rows[0].approved;
         req.rejected = data.rows[0].rejected;
+        req.resolved = data.rows[0].resolved;
         return next();
       });
   }

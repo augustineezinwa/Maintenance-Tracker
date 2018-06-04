@@ -6,6 +6,7 @@
  
 * *Maintenance Tracker Application UI Link*: https://augustineezinwa.github.io/Maintenance-Tracker/UI/index.html
 * *Maintenance Tracker Application API documentation is live on*: https://mt-tracker.herokuapp.com/api-docs
+
 ## Application - Description
 Maintenance Tracker App is an application that provides users with the ability to reach out to
 operations or repairs department regarding repair or maintenance requests and monitor the
