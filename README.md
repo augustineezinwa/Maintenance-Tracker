@@ -5,6 +5,7 @@
  [![Maintainability](https://api.codeclimate.com/v1/badges/72b5e95d7a7ae48f2f7c/maintainability)](https://codeclimate.com/github/augustineezinwa/Maintenance-Tracker/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/72b5e95d7a7ae48f2f7c/test_coverage)](https://codeclimate.com/github/augustineezinwa/Maintenance-Tracker/test_coverage)
  
 *Maintenance Tracker Application UI Link*: https://augustineezinwa.github.io/Maintenance-Tracker/UI/index.html
+*Maintenance Tracker Application API documentation is live on*: https://mt-tracker.herokuapp.com/api-docs
 ## Application - Description
 Maintenance Tracker App is an application that provides users with the ability to reach out to
 operations or repairs department regarding repair or maintenance requests and monitor the
@@ -26,6 +27,17 @@ Maintenance-Tracker consist of the following features:
 * Users can view all Their requests in Maintenance-Tracker
 * Users can create their requests in Maintenance-Tracker
 * Users can update their requests in Maintenance-Tracker
+* Admin can view all requests in Maintenance-Tracker
+* Admin can approve any request in Maintenance-Tracker
+* Admin can disapprove any request in Maintenance-Tracker
+* Admin can resolve any request in Maintenance-Tracker
+* Users can only see their request
+### Authentication
+* Every user is authenticated during login or signup
+* Maintenance-Tracker makes use of json web token during authentication
+* Every endpoint is secured except the signup or login endpoint
+* Maintenance-Tracker recognises admin upon login as admin data is preseeded into database
+* Users cant access the admin endpoints
 
 ## Technology
 
@@ -69,11 +81,18 @@ npm start
 
 ## API End Points
 <table>
-<tr><th>Http verb</th><th>Endpoint</th><th>Action</th></tr>
+<tr><th>http verb</th><th>Endpoints</th><th>Action</th></tr>
+<tr> <td>POST</td> <td> /auth/signup </td> <td>creates a new user</td></tr>
+<tr> <td>POST</td> <td> /auth/login</td> <td>logins an existing user into Maintnenace-Tracker</td></tr>
 <tr> <td>POST</td> <td> /users/requests </td> <td>creates a new Request </td></tr>
 <tr> <td>PUT</td> <td>/users/requests/:requestId </td><td>Updates a request</td></tr>
 <tr> <td>GET</td><td> /users/requests</td><td> Gets all requests</td></tr>
 <tr><td> GET </td><td>/users/requests/:requestId</td><td> Gets a request by Id</td></tr>
+<tr> <td>GET</td> <td> /requests </td> <td>Admin Route: Gets all requests in Maintenance </td></tr>
+<tr> <td>GET</td> <td> /requests/:requestId </td> <td>Admin Route: Gets a particular request by Id </td></tr>
+<tr> <td>PUT</td> <td> /requests/:requestId/approve </td> <td>Admin Route: Approves a request </td></tr>
+<tr> <td>PUT</td> <td> /requests/:requestId/disapprove </td> <td>Admin Route: Disapproves a request </td></tr>
+<tr> <td>PUT</td> <td> /requests/:requestId/resolve </td> <td>Admin Route: Resolves a request </td></tr>
 </table>
 
 <i>Project is rapidly in progress...</i>
