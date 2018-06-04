@@ -1,4 +1,6 @@
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import validator from 'express-validator';
@@ -10,12 +12,13 @@ const {
   handleDatabaseConnectionError, handleTableWriteError
 } = ErrorHandler;
 const app = express();
+const swaggerDocument = YAML.load(`${process.cwd()}/swagger.yaml`);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(morgan('dev'));
 const PORT = process.env.PORT || 2020;
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/v1', indexRouter);
 app.use('/error/read', (err, res) => handleTableReadError(err, res));
 app.use('/error/create', (err, res) => handleTableCreationError(err, res));
