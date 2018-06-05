@@ -87,7 +87,7 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/CreateRequestModel'
-        - in: path
+        - in: query
           name: token
           description: you need a token to create a request
           required: true
@@ -110,7 +110,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: path
+        - in: query
           name: token
           description: you need a token to fetch all requests
           required: true
@@ -139,7 +139,7 @@ paths:
           description: Id to fetch the request
           required: true
           type: integer
-        - in: path
+        - in: query
           name: token
           description: you need a token to fetch this request
           required: true
@@ -170,7 +170,7 @@ paths:
           required: true
           type: integer
         - name: token
-          in: path
+          in: query
           description: you need a token to update this request
           required: true
           type: string
@@ -204,7 +204,7 @@ paths:
           required: true
           type: integer
         - name: token
-          in: path
+          in: query
           description: you need a token to fetch delete a request
           required: true
           type: string
@@ -228,7 +228,7 @@ paths:
         - application/json
       parameters:
         - name: token
-          in: path
+          in: query
           description: you need a token to fetch all request
           required: true
           type: string
@@ -259,7 +259,7 @@ paths:
           required: true
           type: integer
         - name: token
-          in: path
+          in: query
           description: you need a token to update this request
           required: true
           type: string
@@ -293,7 +293,7 @@ paths:
         required: true
         type: integer
       - name: token
-        in: path
+        in: query
         description: you need a token to fetch all request
         required: true
         type: string
@@ -326,7 +326,7 @@ paths:
         required: true
         type: integer
       - name: token
-        in: path
+        in: query
         description: you need a token to fetch all request
         required: true
         type: string
