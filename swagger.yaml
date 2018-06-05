@@ -243,7 +243,7 @@ paths:
           description: Action forbidden! please sign up or login
         '404':
           description: No request found at this time
-  '/request/{requestId}/approve':
+  '/requests/{requestId}/approve':
      put:
       tags:
         - Requests
@@ -277,7 +277,7 @@ paths:
         '400':
           description: Request validation errors!
   
-  '/request/{requestId}/disapprove':
+  '/requests/{requestId}/disapprove':
     put:
       tags:
         - Requests
@@ -310,7 +310,7 @@ paths:
           description: Action forbidden! please sign up or login
         '400':
           description: Request validation errors!
-  '/request/{requestId}/resolve':
+  '/requests/{requestId}/resolve':
     put:
       tags:
         - Requests
