@@ -10,7 +10,8 @@ const {
   getAllRequests, updateRequest, getAllRequestsByAdmin,
   getARequestByAdmin,
   approveRequest,
-  disapproveRequest
+  disapproveRequest,
+  resolveRequest
 } = RequestController;
 const {
   checkRequest,
@@ -32,6 +33,7 @@ requestRouter.get('/requests/:requestId', secureRoute, secureMasterRoute, getARe
 requestRouter.get('/users/requests', secureRoute, getAllRequests);
 requestRouter.put('/requests/:requestId/approve', secureRoute, secureMasterRoute, checkRequest, approveRequest);
 requestRouter.put('/requests/:requestId/disapprove', secureRoute, secureMasterRoute, checkRequest, disapproveRequest);
+requestRouter.put('/requests/:requestId/resolve', secureRoute, secureMasterRoute, checkRequest, resolveRequest);
 requestRouter.put(
   '/users/requests/:requestId', validateUrl, secureRoute, validateRequestUpdate, validateRequestTitle,
   validateRequestType, validateRequestMessage, updateRequest
