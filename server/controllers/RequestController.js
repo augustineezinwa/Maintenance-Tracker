@@ -1,6 +1,6 @@
 import connect from '../connections/connect';
 import {
-  findAllrequestsById, findRequestById, createRequestData,
+  findAllrequestsById, findRequestById, createRequestData, deleteRequestData,
   updateRequestData, findAllrequests, findARequest, updateApprovedRequestData,
   updateDisapprovedRequestData, updateResolvedRequestData
 } from '../helper/instructions/requestInstructions';
@@ -321,6 +321,38 @@ class RequestController {
               rejected: data.rows[0].rejected,
               resolved: data.rows[0].resolved
             }
+          }
+        });
+      });
+  }
+  /**
+* @static
+*
+* @param {object} req - The request payload sent to the router
+* @param {object} res - The response payload sent back from the controller
+*
+* @returns {object} - status Message or the resolved request object.
+*
+* @description This method allows the user to delete a particular request in maintenance tracker
+* @memberOf RequestController
+*/
+  static deleteRequest(req, res) {
+    const { requestId } = req.params;
+    const { approved, id } = req;
+    if (approved === 'success') {
+      return res.status(403).json({
+        status: 'fail',
+        data: {
+          message: 'Action forbidden! You cant delete an approved request!.'
+        }
+      });
+    }
+    connect.query(deleteRequestData(id, requestId))
+      .then((data) => {
+        res.status(200).json({
+          status: 'success',
+          data: {
+            message: 'This request has been successfully deleted',
           }
         });
       });

@@ -6,6 +6,7 @@ import {
 } from '../../helper/instructions/userInstructions';
 import {
   destroyRequestTable,
+  deleteRequestData,
   createRequestData,
   findAllrequestsById,
   findRequestById,
@@ -45,6 +46,14 @@ it('testing sql instruction for updating request', (done) => {
     .eql(`UPDATE requests SET requestTitle = $1, requestType = $2, message = $3 
     WHERE requests.userId =$4 AND requests.id = $5 RETURNING *`);
   output.values.should.be.eql(['faulty tv', 'maintenance', 'come fix my tv', 1, 2]);
+  done();
+});
+it('testing sql instruction for deleting request', (done) => {
+  const output = deleteRequestData(1, 2);
+  output.should.be.a('object');
+  output.text.should.be
+    .eql('DELETE from requests WHERE requests.userId =$1 AND requests.id =$2 RETURNING *');
+  output.values.should.be.eql([1, 2]);
   done();
 });
 it('testing sql instruction for updating approved request', (done) => {
