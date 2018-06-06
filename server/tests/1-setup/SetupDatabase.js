@@ -36,4 +36,15 @@ describe('Testing server setup', () => {
         done();
       });
   });
+  it('should return error message if admin enters a fake password', (done) => {
+    chai.request(app).put('/api/v1/database/admin')
+      .send({ masterpassword: 'somefakepassword32434' })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(401);
+        res.body.status.should.be.eql('fail');
+        res.body.data.message.should.be.eql('Unauthorized! Access denied!');
+        done();
+      });
+  });
 });
