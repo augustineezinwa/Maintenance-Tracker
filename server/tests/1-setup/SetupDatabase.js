@@ -7,7 +7,8 @@ chai.use(chaiHttp);
 
 describe('Testing server setup', () => {
   it('should test that users table is setup', (done) => {
-    chai.request(app).get('/api/v1/database')
+    chai.request(app).put('/api/v1/database')
+      .send({ masterpassword: process.env.MASTER_PASSWORD })
       .end((err, res) => {
         should.not.exist(err);
         res.should.have.status(200);
@@ -16,7 +17,8 @@ describe('Testing server setup', () => {
       });
   });
   it('should test that requests table is setup', (done) => {
-    chai.request(app).get('/api/v1/database/2')
+    chai.request(app).put('/api/v1/database/2')
+      .send({ masterpassword: process.env.MASTER_PASSWORD })
       .end((err, res) => {
         should.not.exist(err);
         res.should.have.status(200);
@@ -25,7 +27,8 @@ describe('Testing server setup', () => {
       });
   });
   it('should seed the admin into the user table', (done) => {
-    chai.request(app).get('/api/v1/database/admin')
+    chai.request(app).put('/api/v1/database/admin')
+      .send({ masterpassword: process.env.MASTER_PASSWORD })
       .end((err, res) => {
         should.not.exist(err);
         res.should.have.status(200);

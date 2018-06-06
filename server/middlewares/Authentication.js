@@ -67,6 +67,28 @@ class Authentication {
     }
     return next();
   }
+  /**
+  * @description -This method locks out access to anyone that is not admin
+  *
+  * @param {object} req - The request payload sent to the router
+  * @param {object} res - The response payload sent back from the secureGate middleware
+  * @param {object} next - The request payload sent to the next middleware in the stack.
+  *
+  * @returns {object} - status Message and grants admin privileges.
+  * @memberOf Authentication
+  * @static
+  */
+  static secureGate(req, res, next) {
+    if (req.body.masterpassword !== process.env.MASTER_PASSWORD) {
+      return res.status(401).json({
+        status: 'fail',
+        data: {
+          message: 'Unauthorized! Access denied!'
+        }
+      });
+    }
+    return next();
+  }
 }
 
 export default Authentication;
