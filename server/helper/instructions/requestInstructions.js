@@ -28,6 +28,14 @@ const updateRequestData = (requestTitle, requestType, message, id, requestId) =>
   };
   return query;
 };
+
+const deleteRequestData = (id, requestId) => {
+  const query = {
+    text: 'DELETE from requests WHERE requests.userId =$1 AND requests.id =$2 RETURNING *',
+    values: [id, requestId]
+  };
+  return query;
+};
 const updateApprovedRequestData = (requestId) => {
   const query = {
     text: 'UPDATE requests SET rejected = $1, approved = $2 WHERE requests.id = $3 RETURNING *',
@@ -80,7 +88,7 @@ const findARequest = (id) => {
 
 export {
   createRequestData, createRequestTable,
-  findAllrequestsById, destroyRequestTable,
+  findAllrequestsById, destroyRequestTable, deleteRequestData,
   findRequestById, updateRequestData, findAllrequests, findARequest,
   updateApprovedRequestData, updateDisapprovedRequestData, updateResolvedRequestData
 };

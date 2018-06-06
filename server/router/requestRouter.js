@@ -2,7 +2,6 @@ import express from 'express';
 import RequestController from '../controllers/RequestController';
 import RequestValidation from '../middlewares/RequestValidaton';
 import Authentication from '../middlewares/Authentication';
-import { updateApprovedRequestData } from '../helper/instructions/requestInstructions';
 
 const { secureRoute, secureMasterRoute } = Authentication;
 const {
@@ -11,14 +10,14 @@ const {
   getARequestByAdmin,
   approveRequest,
   disapproveRequest,
-  resolveRequest
+  resolveRequest,
+  deleteRequest
 } = RequestController;
 const {
   checkRequest,
   validateUrl,
   validateRequestTitle,
   validateRequestMessage,
-  validateRequestStatus,
   validateRequestType,
   validateRequestUpdate
 } = RequestValidation;
@@ -38,5 +37,6 @@ requestRouter.put(
   '/users/requests/:requestId', validateUrl, secureRoute, validateRequestUpdate, validateRequestTitle,
   validateRequestType, validateRequestMessage, updateRequest
 );
+requestRouter.delete('/users/requests/:requestId', validateUrl, secureRoute, checkRequest, deleteRequest);
 
 export default requestRouter;

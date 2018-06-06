@@ -240,6 +240,35 @@ describe('Testing post request', () => {
         done();
       });
   });
+  it('should post a request with a token', (done) => {
+    chai.request(app).post('/api/v1/users/requests')
+      .send({
+        requestTitle: 'Electric blender is not working!',
+        requestType: 'repair',
+        message: 'My Electric blender is not working, Come check it out',
+      })
+      .send({ token: process.env.USER_TOKEN })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(201);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('success');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'request was created successfully',
+          request: {
+            id: 3,
+            requestTitle: 'Electric blender is not working!',
+            requestType: 'repair',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric blender is not working, Come check it out'
+          }
+        });
+        done();
+      });
+  });
   it('should return all requests made by a user', (done) => {
     chai.request(app).get('/api/v1/requests')
       .send({
@@ -271,44 +300,48 @@ describe('Testing post request', () => {
             rejected: 'pending',
             message: 'My Electric fish is faulty, Come check it out',
             userid: 2
+          },
+          {
+            id: 3,
+            requesttitle: 'Electric blender is not working!',
+            requesttype: 'repair',
+            resolved: 'pending',
+            approved: 'pending',
+            rejected: 'pending',
+            message: 'My Electric blender is not working, Come check it out',
+            userid: 2
           }
         ]);
         done();
       });
   });
-  it('should return all requests made by a user', (done) => {
-    chai.request(app).get('/api/v1/users/requests')
-      .send({
-        token: process.env.USER_TOKEN
-      })
+  it('should post a request with a token', (done) => {
+    chai.request(app).delete('/api/v1/users/requests/3')
+      .send({ token: process.env.USER_TOKEN })
       .end((err, res) => {
         should.not.exist(err);
         res.should.have.status(200);
         res.body.should.be.a('object');
         res.body.status.should.eql('success');
-        res.body.data.should.be.a('array');
-        res.body.data.should.be.eql([
-          {
-            id: 1,
-            requesttitle: 'Electric fish is faulty!',
-            requesttype: 'maintenance',
-            resolved: 'pending',
-            approved: 'pending',
-            rejected: 'pending',
-            message: 'My Electric fish is faulty, Come check it out',
-            userid: 2
-          },
-          {
-            id: 2,
-            requesttitle: 'Electric cooker is faulty!',
-            requesttype: 'maintenance',
-            resolved: 'pending',
-            approved: 'pending',
-            rejected: 'pending',
-            message: 'My Electric fish is faulty, Come check it out',
-            userid: 2
-          }
-        ]);
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'This request has been successfully deleted',
+        });
+        done();
+      });
+  });
+  it('should return an error message  if request doesnt exist', (done) => {
+    chai.request(app).delete('/api/v1/users/requests/3')
+      .send({ token: process.env.USER_TOKEN })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(404);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'No request found at this time',
+        });
         done();
       });
   });
