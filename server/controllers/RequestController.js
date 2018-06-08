@@ -1,12 +1,14 @@
 import connect from '../connections/connect';
+import ErrorHandler from '../helper/ErrorHandler';
+import Display from '../helper/Display';
 import {
   findAllrequestsById, findRequestById, createRequestData, deleteRequestData,
   updateRequestData, findAllrequests, findARequest, updateApprovedRequestData,
   updateDisapprovedRequestData, updateResolvedRequestData
 } from '../helper/instructions/requestInstructions';
-import ErrorHandler from '../helper/ErrorHandler';
 
-const { handleTableReadError, handleTableWriteError } = ErrorHandler;
+const { displaySuccess } = Display;
+const { handleTableReadError, handleTableWriteError, handleNotFoundError } = ErrorHandler;
 /**
   * @class RequestController
   *
@@ -30,17 +32,9 @@ class RequestController {
     connect.query(findRequestById(requestId, id))
       .then((data) => {
         if (data.rows.length < 1) {
-          return res.status(404).json({
-            status: 'fail',
-            data: {
-              message: 'No request found at this time!'
-            }
-          });
+          return handleNotFoundError(res);
         }
-        return res.status(200).json({
-          status: 'success',
-          data: data.rows
-        });
+        return displaySuccess(data, res);
       }).catch(err => handleTableReadError(err, res));
   }
 
@@ -60,17 +54,9 @@ class RequestController {
     connect.query(findAllrequestsById(id))
       .then((data) => {
         if (data.rows.length < 1) {
-          return res.status(404).json({
-            status: 'fail',
-            data: {
-              message: 'No request found at this time'
-            }
-          });
+          return handleNotFoundError(res);
         }
-        return res.status(200).json({
-          status: 'success',
-          data: data.rows
-        });
+        return displaySuccess(data, res);
       })
       .catch(err => handleTableReadError(err, res));
   }
@@ -89,17 +75,9 @@ class RequestController {
     connect.query(findAllrequests())
       .then((data) => {
         if (data.rows.length < 1) {
-          return res.status(404).json({
-            status: 'fail',
-            data: {
-              message: 'No request found at this time'
-            }
-          });
+          return handleNotFoundError(res);
         }
-        return res.status(200).json({
-          status: 'success',
-          data: data.rows
-        });
+        return displaySuccess(data, res);
       })
       .catch(err => handleTableReadError(err, res));
   }
@@ -119,17 +97,9 @@ class RequestController {
     connect.query(findARequest(requestId))
       .then((data) => {
         if (data.rows.length < 1) {
-          return res.status(404).json({
-            status: 'fail',
-            data: {
-              message: 'No request found at this time'
-            }
-          });
+          return handleNotFoundError(res);
         }
-        return res.status(200).json({
-          status: 'success',
-          data: data.rows
-        });
+        return displaySuccess(data, res);
       })
       .catch(err => handleTableReadError(err, res));
   }
@@ -200,7 +170,7 @@ class RequestController {
             }
           }
         });
-      });
+      }).catch(err => handleTableWriteError(err, res));
   }
   /**
 * @static
@@ -241,7 +211,7 @@ class RequestController {
             }
           }
         });
-      });
+      }).catch(err => handleTableWriteError(err, res));
   }
   /**
 * @static
@@ -282,7 +252,7 @@ class RequestController {
             }
           }
         });
-      });
+      }).catch(err => handleTableWriteError(err, res));
   }
   /**
 * @static
@@ -323,7 +293,7 @@ class RequestController {
             }
           }
         });
-      });
+      }).catch(err => handleTableWriteError(err, res));
   }
   /**
 * @static
@@ -331,7 +301,7 @@ class RequestController {
 * @param {object} req - The request payload sent to the router
 * @param {object} res - The response payload sent back from the controller
 *
-* @returns {object} - status Message or the resolved request object.
+* @returns {object} - status Message
 *
 * @description This method allows the user to delete a particular request in maintenance tracker
 * @memberOf RequestController
@@ -355,7 +325,8 @@ class RequestController {
             message: 'This request has been successfully deleted',
           }
         });
-      });
+      })
+      .catch(err => handleTableReadError(err, res));
   }
 }
 export default RequestController;

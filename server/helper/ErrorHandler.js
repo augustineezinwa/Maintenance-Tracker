@@ -81,5 +81,23 @@ class ErrorHandler {
       }
     });
   }
+  /**
+      * @description -This method takes care of an error if request was not found
+      *
+      * @param {object} res - The res object sent from this method
+      *
+      * @returns {object} - returns the response object to the controller
+      *
+      * @memberOf Error Handler class
+      * @static
+      */
+  static handleNotFoundError(res) {
+    return res.status(404).json({
+      status: 'fail',
+      data: {
+        message: 'No request found at this time'
+      }
+    });
+  }
 }
 export default ErrorHandler;

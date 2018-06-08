@@ -1,6 +1,4 @@
 import chai from 'chai';
-
-import connect from '../../connections/connect';
 import app from '../../app';
 
 

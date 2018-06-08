@@ -175,7 +175,7 @@ describe('Testing get all request', () => {
         res.body.should.be.a('object');
         res.body.status.should.eql('fail');
         res.body.data.should.have.property('message');
-        res.body.data.message.should.be.eql('No request found at this time!');
+        res.body.data.message.should.be.eql('No request found at this time');
         done();
       });
   });
@@ -315,7 +315,7 @@ describe('Testing post request', () => {
         done();
       });
   });
-  it('should post a request with a token', (done) => {
+  it('should delete a request with a token', (done) => {
     chai.request(app).delete('/api/v1/users/requests/3')
       .send({ token: process.env.USER_TOKEN })
       .end((err, res) => {
@@ -579,7 +579,7 @@ describe('Testing get all request for a user', () => {
         res.body.should.be.a('object');
         res.body.status.should.eql('fail');
         res.body.data.should.be.a('object');
-        res.body.data.message.should.be.eql('No request found at this time!');
+        res.body.data.message.should.be.eql('No request found at this time');
         done();
       });
   });
@@ -641,7 +641,7 @@ describe('Testing get all request for a user', () => {
         res.body.status.should.eql('fail');
         res.body.data.should.be.a('object');
         res.body.data.should.be.eql({
-          message: 'No request found at this time!'
+          message: 'No request found at this time'
         });
         done();
       });
@@ -972,6 +972,21 @@ describe('Testing put request', () => {
             rejected: 'fail',
             resolved: 'success'
           }
+        });
+        done();
+      });
+  });
+  it('should not delete an approved request', (done) => {
+    chai.request(app).delete('/api/v1/users/requests/1')
+      .send({ token: process.env.USER_TOKEN })
+      .end((err, res) => {
+        should.not.exist(err);
+        res.should.have.status(403);
+        res.body.should.be.a('object');
+        res.body.status.should.eql('fail');
+        res.body.data.should.be.a('object');
+        res.body.data.should.be.eql({
+          message: 'Action forbidden! You cant delete an approved request!.',
         });
         done();
       });

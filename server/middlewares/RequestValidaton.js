@@ -3,8 +3,8 @@ import connect from '../connections/connect';
 import ErrorHandler from '../helper/ErrorHandler';
 import { findRequestById, findARequest } from '../helper/instructions/requestInstructions';
 
-const { validateRequestMessage, validateStatus } = InputFieldValidaton;
-const { handleTableReadError } = ErrorHandler;
+const { validateRequestMessage } = InputFieldValidaton;
+const { handleTableReadError, handleNotFoundError } = ErrorHandler;
 /**
   * @class RequestController
   *
@@ -121,41 +121,6 @@ class RequestValidation {
     * @param {object} res - The response payload sent back from the controller
     * @param {function} next -The call back function that calls the next router
     *
-    * @returns {object} - status Message and the particular request by id.
-    *
-    * @description This method validates the status of every requests in maintenance tracker
-    * @memberOf RequestController
-    */
-  static validateRequestStatus(req, res, next) {
-    const {
-      resolved,
-      approved,
-      rejected
-    } = req.body;
-    const resolvedStatus = !validateStatus(resolved) ? 'resolved' : '';
-    const approvedStatus = !validateStatus(approved) ? 'approved' : '';
-    const rejectedStatus = !validateStatus(rejected) ? 'rejected' : '';
-    if (resolvedStatus === 'resolved'
-    || approvedStatus === 'approved'
-    || rejectedStatus === 'rejected') {
-      return res.status(400).json({
-        status: 'fail',
-        data: {
-          message: `The ${resolvedStatus ||
-            approvedStatus ||
-            rejectedStatus} status field can only be success or fail`
-        }
-      });
-    }
-    return next();
-  }
-  /**
-    * @static
-    *
-    * @param {object} req - The request payload sent to the router
-    * @param {object} res - The response payload sent back from the controller
-    * @param {function} next -The call back function that calls the next router
-    *
     * @returns {object} - status message or a callback to the next middleware
     *
     * @description This method validates the status of every requests in maintenance
@@ -216,12 +181,7 @@ class RequestValidation {
     connect.query(findARequest(requestId))
       .then((data) => {
         if (data.rows.length < 1) {
-          return res.status(404).json({
-            status: 'fail',
-            data: {
-              message: 'No request found at this time'
-            }
-          });
+          return handleNotFoundError(res);
         }
         req.approved = data.rows[0].approved;
         req.rejected = data.rows[0].rejected;
