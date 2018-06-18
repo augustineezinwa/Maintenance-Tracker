@@ -7,8 +7,8 @@
     <link rel = "stylesheet" type = "text/css" href = "./styles/form.css">
     <link rel = "stylesheet" type = "text/css" href = "./styles/footer.css">
     <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Maintenance-Tracker | Login</title>
-    <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">  
+    <title>Maintenance-Tracker | Search and filter request</title>
+    <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">
     </head>
     <body>
             <div class ="background">
@@ -19,36 +19,39 @@
                         
                         <nav class="getNav nav-bar-right">
                                
-                                <a href="login1.html"><div class ="nav-bar-link">Login</div></a>
-                                <a href="signup1.html"><div class ="nav-bar-link">Sign up</div></a>
+                                <a href=""><div class ="nav-bar-link">Login</div></a>
+                                <a href=""><div class ="nav-bar-link">Sign out</div></a>
                         </nav>
                         </div>
                         
         <div class ="main">
-            
-        
-            <div class = "login-panel">
-                    <div class = "login-box">
-                    <h2>Login</h2>
-                    <form class = "">
-                        <label for="email"><b></b></label>
-                        <input type="text" name="email" placeholder ="Enter Email"required>
-            
-                        <label for="password"><b></b></label>
-                        <input type="password" name="password" placeholder="Enter password" required>
-            
-                        <button type="submit"> Login</button>
-                    </form>
-                </div>
+            <div class = "head-line">
+        <div class ="login-panel">
+           
+                    <div class ="login-box-search">
+                            <div class= "search-display"> 
+                             <div class = "search-line"><input type =text  placeholder="Search request ..."/></div>
+                            <div class= "search-icon"><i class="fa fa-search"></i>
+                            </div></div>
                         </div>
-                    </div>
-                    
+                     
+        </div>
+        <div class = "login-panel">
+                <div class = "search-display-card">
+                       <div>&nbsp</div>
+                       <div class ="inner-box search-text">Search Results</div> 
+                       <hr>
+                 </div>
+        </div>
+       
+          
+    </div>
 </div>
 
-<div class= "footer">
-    <p> &copy 2017 Maintenance-Tracker </p>
-</div>  
-        
+        <div class= "footer">
+                <p> &copy 2017 Maintenance-Tracker </p>
+            </div>
+        </div>
         <script src="./js/ToggleNavBar.js"></script>
     </body>
     </html>
