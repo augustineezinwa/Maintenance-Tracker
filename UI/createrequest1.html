@@ -1,0 +1,59 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+    <link rel = "stylesheet" type = "text/css" href = "./styles/nav.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/main.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/card.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/form.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/footer.css">
+    <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Maintenance-Tracker | Create a request</title>
+    <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">
+    </head>
+    <body>
+            <div class ="background">
+            <div class = "nav-bar">
+                    <div class ="nav-bar-brand-logo">Maintenance Tracker &nbsp <i class="fa fa-wrench"></i> </div>
+                     <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
+                        
+                        <nav class="getNav nav-bar-right">
+                                <a href="userdashboard1.html"><div class ="nav-bar-link">Home</div></a>
+                                <a href="login1.html"><div class ="nav-bar-link">Login</div></a>
+                                <a href="index.html"><div class ="nav-bar-link">Sign out</div></a>
+                        </nav>
+                        </div>
+                        
+        <div class ="main">
+            
+        
+            <div class = "request-panel">
+                <div class = "request-box">
+                    <div><h2>Create Request</h2></div>
+                <form class = "form-one">
+        
+                    <label for="title"><h4><b>Request title</b></h4></label>
+                    <input type="text" name="title" required>
+                    <select id= "requestType" name="requestType">
+                        <option value= "0">Select Request Type</option>
+                        <option value= "1">Repair</option>
+                        <option value= "2">Maintenance</option>
+                    </select>
+                    <div class = "spacing">
+                    <label for="requestDescription"><h4><b>Brief Description of fault</b></h4></label>
+                    <div>&nbsp</div>
+                    <textarea required ></textarea>
+                    <button type="submit"> Send Request</button>
+                    </div>
+                </form>
+            </div>
+                    </div>
+    
+</div>
+
+        <div class= "footer">
+                <p> &copy 2017 Maintenance-Tracker </p>
+            </div>
+        </div>
+        <script src="./js/ToggleNavBar.js"></script>
+    </body>
+    </html>

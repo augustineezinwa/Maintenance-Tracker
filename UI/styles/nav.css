@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding : 0;
+    box-sizing: border-box;
 }
 .nav-bar {
     display : flex;
@@ -10,6 +11,7 @@
     position: sticky;
     top:0;
     z-index:3;
+    opacity: 0.8;
 }
 
 .nav-bar-icon-toggle {
@@ -21,7 +23,7 @@
     padding: 20px 25px;
 }
 .nav-bar-link {
-    padding: 20px 25px;
+    padding: 20px 49px;
     margin: 0 auto;
     
 }
@@ -40,20 +42,29 @@ display: flex;
 }
 
 
-@media only screen and (max-width: 768px) {
-    .nav-bar-right, .nav-bar {
+@media(max-width: 768px) {
+    .nav-bar {
+        display: flex;
+        position: sticky;
+        width: 100%;
+        opacity: 0.95;
+    }
+      .nav-bar, .nav-bar-right {
         flex-direction: column;
+        justify-content: flex-start;
     }
     .nav-bar-right {
+        display: none;
         margin-left: 0;
     }
-    .nav-bar-right {
-        display:none;
-    }
+    
     .nav-bar-icon-toggle {
-        display :initial;
-        align-self: flex-end;
-        position: absolute;
+        display: initial;
+        flex-direction: row;
+        justify-content: flex-end;
+        position :absolute;
+        right: 0;
+        top: 0;
         cursor: pointer; 
     } 
     .nav-bar-toggle-display {
@@ -62,6 +73,10 @@ display: flex;
     .nav-bar-link {
         width :100%;
     }
+    .show {
+        display : flex;
+    }
+    
 }
 .getNav a {
     text-decoration: none;

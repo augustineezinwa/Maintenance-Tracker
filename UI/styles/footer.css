@@ -1,9 +1,12 @@
 .footer {
-    max-width:100%;
+    min-width:100%;
     background-color:gray;
     color:white;
     padding:20px;
-    margin:0;
+    margin:0 auto;
     text-align: center;
-    clear:both;
+    height: 69px;
+    position: absolute;
+    bottom: -66;
 }
+

@@ -1,0 +1,65 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+    <link rel = "stylesheet" type = "text/css" href = "./styles/nav.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/main.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/card.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/form.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/footer.css">
+    <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Maintenance-Tracker | User dashboard</title>
+    <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">
+    </head>
+    <body>
+            <div class ="background">
+            <div class = "nav-bar">
+                    <div class ="nav-bar-brand-logo">Maintenance Tracker &nbsp <i class="fa fa-wrench"></i> </div>
+                     <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
+                        <nav class="nav-bar-left active">
+                         <a href="admindashboard1.html"><div class ="nav-bar-link">Home</div></a>    
+                        </nav>
+                        
+                        <nav class="getNav nav-bar-right">
+                               
+                                <a href="login1.html"><div class ="nav-bar-link">Login</div></a>
+                                <a href="index.html"><div class ="nav-bar-link">Sign out</div></a>
+                        </nav>
+                        </div>
+                        
+        <div class ="main">
+            
+        
+            <div class = "request-panel">
+                <div class = "request-box">
+                    <h2>Request Report</h2>
+                   
+                    <textarea required readonly ="readonly">My tv is Faulty. Please come and check it out!</textarea>
+                   <div class = "card-new" style ="width: 100%">
+                       <div>&nbsp</div>
+                       <h4>Request details</h4>
+                    <div>&nbsp</div>
+                    <ul>
+                        <li>Request bearer: &nbsp Jill Jackson</li>
+                        <li>Request Type:  &nbsp Maintenance</li>
+                        <li>Date Created:  &nbsp 31 January 2000</li>
+                        <li>Date Modified: &nbsp Ist January 2023</li>
+                        <li>Request status: &nbsp Accepted &nbsp <i class= "fa fa-check"></i> </li>
+                        <li>Resolved status: &nbsp pending ... &nbsp</li>
+                    </ul>
+                </div>
+                  
+                        <button type="submit"> Accept Request</button>
+                        <button type="submit"> Resolve Request</button>
+                        <button type="submit"> Reject Request</button>
+            </div>
+                    </div>
+    
+</div>
+
+        <div class= "footer">
+                <p> &copy 2017 Maintenance-Tracker </p>
+            </div>
+        </div>
+        <script src="./js/ToggleNavBar.js"></script>
+    </body>
+    </html>
