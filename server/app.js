@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import bodyParser from 'body-parser';
@@ -24,15 +25,10 @@ app.use('/error/read', (err, res) => handleTableReadError(err, res));
 app.use('/error/create', (err, res) => handleTableCreationError(err, res));
 app.use('/error/connect', (err, res) => handleDatabaseConnectionError(err, res));
 app.use('/error/write', (err, res) => handleTableWriteError(err, res));
+app.use(express.static(path.join(__dirname, '..', '/client/public')));
 app.use('/', (req, res) => {
-  res.send({
-    status: 'success',
-    data: {
-      message: 'welcome to maintenance-tracker'
-    }
-  });
+  res.sendFile(path.join(__dirname, '..', '/client/public/index.html'));
 });
-
 
 app.listen(PORT, () => console.log(`server is listening on PORT ${PORT}`));
 
