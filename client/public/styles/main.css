@@ -1,0 +1,129 @@
+.main {
+    margin :5% 20%;
+    text-align: center;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.header {
+    background-color: dodgerblue;
+    color: white;
+    padding: 10px 30px;
+    min-height: 10%;
+    margin-bottom: 4%;
+}
+
+.header-line {
+    
+    box-shadow: 0 12px 24px  0  rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
+}
+
+.main-container {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+.request-container {
+    height: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px; 
+   
+}
+.main-container a {
+    text-decoration: none;
+}
+.card:hover {
+    text-decoration:underline;
+}
+.background {
+    background-image: url('../images/background.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100%;
+    position: relative;
+}
+
+.header > h2 {
+    padding-top: 1%;
+    text-align: left;
+    margin-left: 7%;
+}
+.inner-box {
+    padding: 8px 12px;
+    font-size: 20px;
+    border-left: 1px solid white;
+    width: 30%;
+    margin-top: 4%
+}
+@media(max-width: 768px) {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+ .main {
+     margin: 0;
+     padding:0;
+     text-align: center;
+ }
+    .background {
+        min-height: 100%;
+    }
+    .inner-box {
+        width : 100%;
+        border-bottom: 1px solid white;
+    }
+    .header {
+        margin-bottom: 10%;
+    }
+    
+    .header > h2 {
+        
+        text-align: center;
+        
+    }
+}
+
+.adjust {
+    margin-left: 8%;
+}
+
+.display-container {
+    display : flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 2%;
+}
+
+
+.inner-box a {
+    text-decoration : none;
+    color: black;
+}
+.inner-box a:hover {
+    color: white;
+    background-color: hotpink
+}
+.request-card:hover {
+    color: white;
+    background-color: hotpink;
+}
+
+#requestheader {
+    background-color: hotpink;
+    color:white;
+    position: sticky;
+    top: 0;
+}
