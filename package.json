@@ -4,9 +4,10 @@
   "description": "backend for maintenance-tracker",
   "main": "App.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha --timeout 1000000000 server/tests/**/*.js --exit",
+    "test": "cross-env NODE_ENV=test nyc --require babel-register --require babel-polyfill mocha --timeout 1000000000 server/tests/**/*.js --exit && npm run test-client",
     "test-dev": "nyc --require babel-register --require babel-polyfill mocha --timeout 1000000000 server/tests/**/*.js --exit",
-    "start": "babel-node server/app.js",
+    "test-client": "nyc --require babel-register --require babel-polyfill mocha --timeout 1000000000 client/tests/ --exit",
+    "start": " babel-node server/app.js",
     "db:migrate": "babel-node server/migrations/index.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text --require babel-register --require babel-polyfill mocha server/tests/**/*.js --exit "
@@ -29,6 +30,7 @@
     "eslint-plugin-react": "^7.8.2"
   },
   "dependencies": {
+    "atomus": "^2.0.0",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-plugin-istanbul": "^4.1.6",
@@ -37,6 +39,7 @@
     "body-parser": "^1.18.3",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
+    "cors": "^2.8.4",
     "coveralls": "^3.0.1",
     "cross-env": "^5.1.6",
     "dotenv": "^5.0.1",
