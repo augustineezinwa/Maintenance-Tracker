@@ -6,9 +6,10 @@
     <link rel = "stylesheet" type = "text/css" href = "./styles/card.css"> 
     <link rel = "stylesheet" type = "text/css" href = "./styles/footer.css">
     <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <title>Maintenance-Tracker | Home</title>
     <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">
-    <script>if (window.devicePixelRatio > 1) document.cookie = 'pixelRatio=' + window.devicePixelRatio + ';path=/;expires=Tue, 19 Jan 2038 03:14:07 GMT';</script>    
+
     </head>
     <body>
             <div class ="background">
@@ -22,12 +23,12 @@
                                 <a href="index.html"><div class ="nav-bar-link">Sign out</div></a>
                         </nav>
                         </div>
-                        
+                        <div id = "alert-box"> </div>  
         <div class ="main">
             
             <div class ="header-line">
             <div class = "header">
-                <h2>Welcome User</h2>
+                <h2 id = 'welcome-message'>Welcome User</h2>
             </div>
             <div class = "main-2">
                 <div class ="main-container">
@@ -70,6 +71,10 @@
                 <p> &copy 2017 Maintenance-Tracker </p>
             </div>
         </div>
-        <script src="./js/ToggleNavBar.js"></script>
+        <script src="./js/src/ToggleNavBar.js"></script>  
+        <script src ="./js/src/Authenticaton/Authentication.js"></script>                                                                                                                                                     
+         <script src ="./js/src/Render.js"></script>
+         <script src ="./js/src/Authenticaton/validateAccess.js"></script>
+    <script src ="./js/src/welcome.js"></script>
     </body>
     </html>

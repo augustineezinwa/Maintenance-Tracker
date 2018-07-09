@@ -35,7 +35,9 @@ class UserController {
     } = req.body;
     connect.query(createUserData(firstName, lastName, email, password, false))
       .then((data) => {
-        const { id, email, admin } = data.rows[0];
+        const {
+          id, email, admin, firstname
+        } = data.rows[0];
         const payload = {
           id,
           email,
@@ -45,7 +47,7 @@ class UserController {
         return res.status(201).json({
           status: 'success',
           data: {
-            message: 'you signed up successfully', token
+            message: `${firstname}, you signed up successfully`, token
           }
         });
       })
@@ -76,10 +78,11 @@ class UserController {
         };
         if (bcrypt.compareSync(req.body.password, password)) {
           const token = jwt.sign({ payload }, process.env.PRIVATE_KEY, { expiresIn: 77 * 77 });
+          const name = admin ? 'Admin' : data.rows[0].firstname;
           return res.status(200).json({
             status: 'success',
             data: {
-              message: 'you are logged in', token
+              message: `${name}, you are logged in`, token
             }
           });
         }

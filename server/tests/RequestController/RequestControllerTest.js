@@ -93,7 +93,7 @@ describe('Testing get all request', () => {
         res.should.have.status(200);
         res.body.should.be.a('object');
         res.body.should.have.property('status').eql('success');
-        res.body.data.should.have.property('message').eql('you are logged in');
+        res.body.data.should.have.property('message').eql('Admin, you are logged in');
         res.body.data.should.have.property('token');
         process.env.MASTER_TOKEN = res.body.data.token;
         done();
@@ -112,7 +112,7 @@ describe('Testing get all request', () => {
         res.should.have.status(201);
         res.body.should.be.a('object');
         res.body.should.have.property('status').eql('success');
-        res.body.data.should.have.property('message').eql('you signed up successfully');
+        res.body.data.should.have.property('message').eql('Augustine, you signed up successfully');
         res.body.data.should.have.property('token');
         process.env.USER_TOKEN = res.body.data.token;
         done();
