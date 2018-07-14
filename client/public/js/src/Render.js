@@ -146,7 +146,7 @@ class Render {
     divElement.innerHTML = message;
   }
   /**
-      * @description -This method renders the validation message on the signup lastName field.
+      * @description -This method renders the validation message on the signup form fields.
       *
       * @param {string} ElementId -This is the html element that needs to be rendered
       * @param {string} formFieldId -This is the html element(sign) that needs to be rendered.
@@ -168,10 +168,10 @@ class Render {
     divElement.style.color = signColor;
   }
   /**
-      * @description -This method renders the validation message on the signup lastName field.
+      * @description -This method renders the loader animation during asynchronous events.
       *
-      * @param {string} ElementId -This is the html element that needs to be render the loader
-      * @param {string} toggleDisplay -This is the css style that handles the display of the validation sign
+      * @param {string} ElementId -This is the html element that needs to render the loader
+      * @param {string} toggleDisplay -This is the css style that handles the display of the loader animation.
       * @param {string} loaderTextId - This is the div id that holds the loader text
       * @param {string} loaderText  -This is the text displayed by the loader to the user while waiting.
       *
@@ -188,7 +188,7 @@ class Render {
     loaderTextElement.innerHTML = loaderText;
   }
   /**
-      * @description -This method renders the validation message on the signup lastName field.
+      * @description -This method renders the alerts to users on maintenance-tracker.
       *
       * @param {string} ElementId -This is the html element that needs to be displayed
       * @param {string} toggleDisplay -This is the css style that handles the display of the div element
@@ -206,11 +206,11 @@ class Render {
     divElement.style.backgroundColor = bgColor;
   }
   /**
-      * @description -This method renders the validation message on the signup lastName field.
+      * @description -This method renders a div by id.
       *
       * @param {string} ElementId -This is the html element that needs to be displayed
       * @param {string} toggleDisplay -This is the css style that handles the display of the div element
-      * @returns {null} - writes and display message to the  DOM
+      * @returns {null} - displays or hide divs in the  DOM
       *
       * @memberOf Render class
       * @static

@@ -99,6 +99,27 @@ class UserController {
         }
       }));
   }
+  /**
+  * @description -This method checks if a user's season is valid
+  *
+  * @param {object} req - The request payload sent to the router
+  * @param {object} res - The response payload sent back from the controller
+  *
+  * @returns {object} - status Message and checks the validity of a user's token in Maintenance-Tracker
+  *
+  * @description This controller validates a user's token.
+  * @memberOf UserController
+  * @static
+  */
+  static validateToken(req, res) {
+    return res.json({
+      status: 'success',
+      data: {
+        message: 'you are logged in',
+        adminStatus: 'true'
+      }
+    });
+  }
 }
 
 export default UserController;

@@ -30,9 +30,16 @@ app.use('/error/create', (err, res) => handleTableCreationError(err, res));
 app.use('/error/connect', (err, res) => handleDatabaseConnectionError(err, res));
 app.use('/error/write', (err, res) => handleTableWriteError(err, res));
 app.use(express.static(path.join(__dirname, '..', '/client/public')));
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '/client/public/index.html'));
 });
+app.use('*', (req, res) => res.status(404).json({
+  status: 'fail',
+  errors: {
+    message: 'Page Not Found'
+  }
+
+}));
 app.listen(PORT, () => console.log(`server is listening on PORT ${PORT}`));
 
 export default app;

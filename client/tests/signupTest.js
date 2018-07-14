@@ -5,7 +5,10 @@ import chai from 'chai';
 
 const should = chai.should();
 const htmlString = fs.readFileSync('client/public/signupTestRunner.html').toString('utf8');
-let browser, $, trigger, func;
+
+let browser, $, trigger, func, email, windowObject,
+  firstName, lastName, password, confirmPassword;
+
 describe('Signup form Tests', () => {
   it('validating signup form', (done) => {
     browser = atomus()
@@ -16,6 +19,7 @@ describe('Signup form Tests', () => {
       .external(path.join(__dirname, '..', '..', '/client/public/js/src/Render.js'))
       .external(path.join(__dirname, '..', '..', '/client/public/js/src/InputFieldValidation/index.js'))
 
+
       .ready((errors, window) => {
         $ = selector => window.document.getElementById(selector);
         func = className => window.eval(className);
@@ -24,8 +28,7 @@ describe('Signup form Tests', () => {
           e.initEvent(event, true, true);
           element.dispatchEvent(e);
         };
-
-        const email = $('emailField');
+        email = $('emailField');
         const emailError = $('displayEmailError');
         email.value = 'emeka';
         trigger(email, 'keyup');
@@ -41,7 +44,7 @@ describe('Signup form Tests', () => {
   });
 
   it('validating password field', (done) => {
-    const password = $('passwordField');
+    password = $('passwordField');
     const passwordError = $('displayPasswordError');
     const notifyErrorPassword = $('notify-error-password');
     const notifyNoErrorPassword = $('notify-no-error-password');
@@ -65,7 +68,7 @@ describe('Signup form Tests', () => {
   });
 
   it('validating confirm password field', (done) => {
-    const confirmPassword = $('confirmPasswordField');
+    confirmPassword = $('confirmPasswordField');
     const confirmPasswordError = $('displayConfirmPasswordError');
     const notifyErrorConfirmPassword = $('notify-error-confirmpassword');
     const notifyNoErrorConfirmPassword = $('notify-no-error-confirmpassword');
@@ -88,32 +91,9 @@ describe('Signup form Tests', () => {
     done();
   });
 
-  it('validating confirm password field', (done) => {
-    const confirmPassword = $('confirmPasswordField');
-    const confirmPasswordError = $('displayConfirmPasswordError');
-    const notifyErrorConfirmPassword = $('notify-error-confirmpassword');
-    const notifyNoErrorConfirmPassword = $('notify-no-error-confirmpassword');
-
-    confirmPassword.value = 'fish';
-    trigger(confirmPassword, 'keyup');
-    confirmPasswordError.innerHTML.should.be
-      .eql('* Password does not match');
-    confirmPasswordError.style.color.should.be.eql('red');
-    confirmPassword.style.borderBottomColor.should.be.eql('red');
-    notifyErrorConfirmPassword.style.display.should.be.eql('inline');
-    notifyNoErrorConfirmPassword.style.display.should.be.eql('none');
-
-    confirmPassword.value = 'donekey#$002';
-    trigger(confirmPassword, 'keyup');
-    confirmPasswordError.innerHTML.should.be.eql('');
-    confirmPassword.style.borderBottomColor.should.be.eql('');
-    notifyNoErrorConfirmPassword.style.display.should.be.eql('inline');
-    notifyErrorConfirmPassword.style.display.should.be.eql('none');
-    done();
-  });
 
   it('validating firstname field', (done) => {
-    const firstName = $('firstNameField');
+    firstName = $('firstNameField');
     const firstNameError = $('displayFirstNameError');
     const notifyErrorFirstName = $('notify-error-firstname');
     const notifyNoErrorFirstName = $('notify-no-error-firstname');
@@ -137,7 +117,7 @@ describe('Signup form Tests', () => {
   });
 
   it('validating lastname field', (done) => {
-    const lastName = $('lastNameField');
+    lastName = $('lastNameField');
     const lastNameError = $('displayLastNameError');
     const notifyErrorLastName = $('notify-error-lastname');
     const notifyNoErrorLastName = $('notify-no-error-lastname');
@@ -160,9 +140,6 @@ describe('Signup form Tests', () => {
     done();
   });
 
-  it('testing  notification alerts ', (done) => {
-    done();
-  });
 
   it('testing email validator function', (done) => {
     func('InputFieldsValidation').validateEmail('augustineezinwa@gmail.com')

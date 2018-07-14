@@ -9,6 +9,7 @@
     <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Maintenance-Tracker | Login</title>
     <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">  
+    <script src ="./js/src/Authenticaton/AuthenticateAccess.js"></script>
     </head>
     <body>
             <div class ="background">
@@ -23,21 +24,22 @@
                                 <a href="signup1.html"><div class ="nav-bar-link">Sign up</div></a>
                         </nav>
                         </div>
-                        
+                        <div id = "alert-box">Hello</div>
         <div class ="main">
             
         
             <div class = "login-panel">
-                    <div class = "login-box">
+                    <div id = "loader" ><img src="images/loading.gif" alt ="loading..."><div id= "loader-text">Signing up...</div></div>
+                    <div class = "login-box" id = 'loginBox'>
                     <h2>Login</h2>
                     <form class = "">
                         <label for="email"><b></b></label>
-                        <input type="text" name="email" placeholder ="Enter Email"required>
+                        <input type="text" name="email" id = 'loginEmailField'placeholder ="Enter Email"required>
             
                         <label for="password"><b></b></label>
-                        <input type="password" name="password" placeholder="Enter password" required>
+                        <input type="password" name="password" id = 'loginPasswordField'placeholder="Enter password" required>
             
-                        <button type="submit"> Login</button>
+                        <button type="submit" id = 'loginButton'> Login</button>
                     </form>
                 </div>
                         </div>
@@ -51,5 +53,10 @@
 
   
         <script src="./js/lib/ToggleNavBar.js"></script>
+        <script type = "text/javascript" src="./js/src/InputFieldValidation/InputFieldsValidation.js"></script>
+        <script type = "text/javascript" src="./js/src/Authenticaton/Authentication.js"></script>
+        
+        <script type = "text/javascript" src="./js/src/Render.js"></script>
+        <script type = "text/javascript" src="./js/src/Authenticaton/login.js"></script>
     </body>
     </html>
