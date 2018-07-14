@@ -19,3 +19,4 @@ confirmPasswordField.addEventListener('keyup', renderInvalidConfirmPassword);
 firstNameField.addEventListener('keyup', renderInvalidFirstName);
 lastNameField.addEventListener('keyup', renderInvalidLastName);
 document.getElementById('signupButton').addEventListener('click', signUp);
+

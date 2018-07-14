@@ -1,2 +1,0 @@
-const { confirmAccess } = Authentication;
-confirmAccess();
