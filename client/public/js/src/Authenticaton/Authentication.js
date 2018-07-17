@@ -18,7 +18,7 @@ class Authentication {
     Render.renderDiv('signup-box', 'none');
     Render.renderLoader('loader', 'block', 'loader-text', 'signing you up...');
     event.preventDefault();
-    return window.fetch('https://mt-tracker.herokuapp.com/api/v1/auth/signup', {
+    fetch('https://mt-tracker.herokuapp.com/api/v1/auth/signup', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -34,24 +34,20 @@ class Authentication {
 
     })
       .then((response) => {
-        console.log('I got here2');
         Render.renderLoader('loader', 'none', 'loader-text', '');
         if (response.status === 422) {
-          console.log(4222);
           Render.renderAlert('alert-box', 'block', 'Invalid Credentials', 'red');
           Render.renderDiv('signup-box', 'block');
           setTimeout(() => (Render.renderAlert('alert-box', 'none', '')), 5000);
           return response.json();
         }
         if (response.status === 409) {
-          console.log('409');
           Render.renderAlert('alert-box', 'block', 'Email is already in use', 'red');
           Render.renderDiv('signup-box', 'block');
           setTimeout(() => (Render.renderAlert('alert-box', 'none', '')), 5000);
           return response.json();
         }
         if (response.status === 201) {
-          console.log(201);
           return response.json();
         }
       })
@@ -65,7 +61,7 @@ class Authentication {
           const name = data.data.message.split(',')[0];
           localStorage.setItem('name', name);
           Render.renderLoader('loader', 'block', 'loader-text', 'redirecting');
-          window.location.href = '/userdashboard1.html';
+          window.location.pathname = (name === 'Admin') ? '/admindashboard1.html' : '/userdashboard1.html';
         }
       })
       .catch(err => console.log(err));
@@ -127,6 +123,21 @@ class Authentication {
         }
       })
       .catch(err => console.log(err));
+  }
+  /**
+        * @description -This method signs out user during signout process.
+        *
+        * @param {object} event - This is the event object that gets passed in.
+        * @returns {null} - signs up user
+        *
+        * @memberOf Authentication class
+        * @static
+        */
+  static signOut(event) {
+    localStorage.removeItem('token');
+    Render.renderAlert('alert-box', 'block', 'You have signed out', 'green');
+    setTimeout(() => (Render.renderAlert('alert-box', 'none', '')), 5000);
+    window.location.pathname = '/login1.html';
   }
 }
 

@@ -33,7 +33,8 @@ class AuthenticateAccess {
           (window.location.pathname === '/userdashboard1.html'))) {
             window.location.pathname = '/admindashboard1.html';
           }
-          if ((!data.data.adminStatus) && (window.location.pathname === '/login1.html')) {
+          if ((!data.data.adminStatus) && ((window.location.pathname === '/login1.html') ||
+          (window.location.pathname === '/admindashboard1.html'))) {
             window.location.pathname = '/userdashboard1.html';
           }
         }
