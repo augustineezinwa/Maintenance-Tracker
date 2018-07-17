@@ -116,7 +116,7 @@ class UserController {
       status: 'success',
       data: {
         message: 'you are logged in',
-        adminStatus: 'true'
+        adminStatus: req.admin
       }
     });
   }
