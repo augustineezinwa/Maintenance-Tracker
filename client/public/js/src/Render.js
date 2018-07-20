@@ -219,5 +219,21 @@ class Render {
     const divElement = document.getElementById(ElementId);
     divElement.style.display = toggleDisplay;
   }
+  /**
+      * @description -This method renders a color on a div.
+      *
+      * @param {string} ElementId -This is the html element that needs to be displayed
+      * @param {string} color -This is the color that needs to be displayed
+      * @param {string} borderColor -This is the color of the element border
+      * @returns {null} - displays or hide divs in the  DOM
+      *
+      * @memberOf Render class
+      * @static
+      */
+  static renderDivColor(ElementId, color, borderColor = '') {
+    const divElement = document.getElementById(ElementId);
+    divElement.style.borderColor = borderColor;
+    divElement.style.borderBottomColor = color;
+  }
 }
 
