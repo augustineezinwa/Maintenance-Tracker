@@ -9,7 +9,9 @@
     <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Maintenance-Tracker | Create a request</title>
     <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">
+    <script src ="./js/src/Authenticaton/AuthenticateAccess.js"></script>
     </head>
+
     <body>
             <div class ="background">
             <div class = "nav-bar">
@@ -18,31 +20,32 @@
                         
                         <nav class="getNav nav-bar-right">
                                 <a href="userdashboard1.html"><div class ="nav-bar-link">Home</div></a>
-                                <a href="login1.html"><div class ="nav-bar-link">Login</div></a>
-                                <a href="index.html"><div class ="nav-bar-link">Sign out</div></a>
+                        
+                                <a href="#"><div class ="nav-bar-link" id = "signoutButton">Sign out</div></a>
                         </nav>
                         </div>
-                        
+                        <div id = "alert-box">Hello</div>
         <div class ="main">
             
         
             <div class = "request-panel">
-                <div class = "request-box">
+                    <div id = "loader" ><img src="images/loading.gif" alt ="loading..."><div id= "loader-text"> </div></div>
+                <div class = "request-box" id = "requestBox">
                     <div><h2>Create Request</h2></div>
-                <form class = "form-one">
+                <form class = "form-one" method = "POST">
         
                     <label for="title"><h4><b>Request title</b></h4></label>
-                    <input type="text" name="title" required>
+                    <input type="text" id = "requestTitle" name="title" required>
                     <select id= "requestType" name="requestType">
                         <option value= "0">Select Request Type</option>
-                        <option value= "1">Repair</option>
-                        <option value= "2">Maintenance</option>
+                        <option value= "repair">Repair</option>
+                        <option value= "maintenance">Maintenance</option>
                     </select>
                     <div class = "spacing">
                     <label for="requestDescription"><h4><b>Brief Description of fault</b></h4></label>
                     <div>&nbsp</div>
-                    <textarea required ></textarea>
-                    <button type="submit"> Send Request</button>
+                    <textarea  id ="message" required ></textarea>
+                    <button type="submit" id ="sendRequestButton"> Send Request</button>
                     </div>
                 </form>
             </div>
@@ -54,6 +57,12 @@
                 <p> &copy 2017 Maintenance-Tracker </p>
             </div>
         </div>
-        <script src="./js/ToggleNavBar.js"></script>
+        <script src="./js/src/ToggleNavBar.js"></script>
+        <script type = "text/javascript" src="./js/src/Authenticaton/Authentication.js"></script>
+        <script type = "text/javascript" src ="./js/src/Authenticaton/signout.js"></script>
+        <script type = "text/javascript" src="./js/src/Render.js"></script>
+        
+        <script type = "text/javascript" src="./js/src/Request/Request.js"></script>
+        <script type = "text/javascript" src="./js/src/Request/createRequest.js"></script>
     </body>
     </html>
