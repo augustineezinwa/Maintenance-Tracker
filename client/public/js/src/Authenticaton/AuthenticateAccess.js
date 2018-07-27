@@ -26,6 +26,7 @@ class AuthenticateAccess {
       .then(response => response.json())
       .then((data) => {
         if (data.status !== 'success') {
+          if (localStorage.getItem('requestData')) localStorage.removeItem('requestData');
           if (window.location.pathname === '/login1.html') return;
           window.location.pathname = '/login1.html';
         } else {
