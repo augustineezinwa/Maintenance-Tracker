@@ -1,0 +1,13 @@
+const getApprovedRequestButton = document.getElementById('getApprovedRequestButton');
+const getPendingRequestButton = document.getElementById('getPendingRequestButton');
+const getRejectedRequestButton = document.getElementById('getRejectedRequestButton');
+const getResolvedRequestButton = document.getElementById('getResolvedRequestButton');
+const searchText = document.getElementById('searchText');
+const refreshButton = document.getElementById('refreshButton');
+const { sortRequest, searchRequest, refreshRequest } = Request;
+getApprovedRequestButton.addEventListener('click', sortRequest);
+getPendingRequestButton.addEventListener('click', sortRequest);
+getRejectedRequestButton.addEventListener('click', sortRequest);
+getResolvedRequestButton.addEventListener('click', sortRequest);
+searchText.addEventListener('keyup', searchRequest);
+refreshButton.addEventListener('click', refreshRequest);

@@ -235,5 +235,33 @@ class Render {
     divElement.style.borderColor = borderColor;
     divElement.style.borderBottomColor = color;
   }
+  /**
+      * @description -This method renders the request into cards.
+      *
+      * @param {string} ElementId -This is the html element that needs to display the request cards
+      * @param {string} requestTitle -This is the title of the request that will be rendered
+      * @param {string} requestStatus -This is the current status of the request.
+      * @returns {null} - displays or stacks the requests in the div
+      *
+      * @memberOf Render class
+      * @static
+      */
+  static renderRequestDivs(ElementId, requestTitle, requestStatus) {
+    const divElement = document.getElementById(ElementId);
+    let statusIndicator, statusIndicatorColor;
+    if (requestStatus === 'pending') { statusIndicator = 'fa fa-exclamation-circle'; statusIndicatorColor = 'darkorange'; }
+    if (requestStatus === 'success') { requestStatus = 'Approved'; statusIndicator = 'fa fa-check'; statusIndicatorColor = 'green'; }
+    if (requestStatus === 'fail') { requestStatus = 'Rejected'; statusIndicator = 'fa fa-times'; statusIndicatorColor = 'darkred'; }
+    divElement.innerHTML += ` <div class ="request-card ">
+    <div class="display-container">
+            
+            <div class = "inner-box">${requestTitle} </div>
+            <div class = "inner-box"><i style ="background-color: white;
+            color: ${statusIndicatorColor}" class="${statusIndicator}">&nbsp</i> ${requestStatus}</div>
+            
+            <div class ="inner-box"><a href ="requestdetails.html"><i class="fa fa-eye">&nbsp</i> view</a></div>
+        </div>
+</div>`;
+  }
 }
 
