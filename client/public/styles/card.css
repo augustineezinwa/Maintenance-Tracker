@@ -94,6 +94,10 @@ ul {
     width: 100%;
     padding: 15px 5px;
 }
+.search-box> input[type=searchUpdates] {
+    width: 100%;
+    padding: 15px 5px;
+}
 .filter-drop-button {
   flex: 30%;
   padding: 15px 5px;
@@ -123,7 +127,8 @@ ul {
     color: white;
     font-size: 20pt;
     margin: auto;
-    margin-left: 2%;
+    margin-left: 0;
+    margin-right: 10%;
     transition: font-size 0.4s ease-in-out;
 }
 .search-icon:hover {

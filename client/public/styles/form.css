@@ -13,7 +13,7 @@
 #notify-no-error-password, #notify-no-error-confirmpassword, #displayConfirmPasswordError,
 #notify-no-error-firstname, #notify-no-error-lastname, #notify-error-firstname, #notify-error-lastname,
 #displayFirstNameError, #displayLastNameError, #notify-error-password, #notify-error-confirmpassword,
-#loader {
+#loader, #updateForm {
     display: none;
 }
 

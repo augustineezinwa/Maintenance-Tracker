@@ -219,6 +219,23 @@ class Render {
     const divElement = document.getElementById(ElementId);
     divElement.style.display = toggleDisplay;
   }
+
+  /**
+      * @description -This method renders a value into a div by id.
+      *
+      * @param {string} ElementId -This is the id of the html element that needs to render the value
+      * @param {string} toggleDisplay -This is the css style that handles the display of the div element
+      * @param {string} value -This is the value that needs to be rendered
+      * @returns {null} - displays or hide divs in the  DOM
+      *
+      * @memberOf Render class
+      * @static
+      */
+  static renderValue(ElementId, toggleDisplay, value) {
+    const divElement = document.getElementById(ElementId);
+    divElement.style.display = toggleDisplay;
+    divElement.value = value;
+  }
   /**
       * @description -This method renders a color on a div.
       *
@@ -241,27 +258,103 @@ class Render {
       * @param {string} ElementId -This is the html element that needs to display the request cards
       * @param {string} requestTitle -This is the title of the request that will be rendered
       * @param {string} requestStatus -This is the current status of the request.
+      * @param {string} requestId -This is the id of the request.
+      * @param {string} updateLink - This link is that updates the request
       * @returns {null} - displays or stacks the requests in the div
       *
       * @memberOf Render class
       * @static
       */
-  static renderRequestDivs(ElementId, requestTitle, requestStatus) {
+  static renderRequestDivs(ElementId, requestTitle, requestStatus, requestId, updateLink = '') {
     const divElement = document.getElementById(ElementId);
-    let statusIndicator, statusIndicatorColor;
+    let statusIndicator, statusIndicatorColor, linkIndicator;
     if (requestStatus === 'pending') { statusIndicator = 'fa fa-exclamation-circle'; statusIndicatorColor = 'darkorange'; }
     if (requestStatus === 'success') { requestStatus = 'Approved'; statusIndicator = 'fa fa-check'; statusIndicatorColor = 'green'; }
     if (requestStatus === 'fail') { requestStatus = 'Rejected'; statusIndicator = 'fa fa-times'; statusIndicatorColor = 'darkred'; }
+    if (updateLink) { linkIndicator = 'fa fa-edit'; }
+
     divElement.innerHTML += ` <div class ="request-card ">
     <div class="display-container">
             
             <div class = "inner-box">${requestTitle} </div>
-            <div class = "inner-box"><i style ="background-color: white;
+            <div class = "inner-box"><i style ="
             color: ${statusIndicatorColor}" class="${statusIndicator}">&nbsp</i> ${requestStatus}</div>
             
-            <div class ="inner-box"><a href ="requestdetails.html"><i class="fa fa-eye">&nbsp</i> view</a></div>
+  <div class ="inner-box"><a href ="#" key = ${requestId} id = "getRequestButton"><i class="${linkIndicator || 'fa fa-eye'}">&nbsp</i>${updateLink || ' View'}</a></div>
         </div>
 </div>`;
   }
-}
 
+  /**
+      * @description -This method renders the request into cards.
+      *
+      * @param {string} ElementId -This is the id of the html element that needs to display the request details
+      * @param {string} requestTitle -This is the title of the request that will be rendered
+      * @param {string} requestType -This is the type of the request that will be rendered.
+      * @param {string} message -This is the message contained in the request.
+      * @param {string} approvedStatus - This is the approval status of the request
+      * @param {string} resolvedStatus -This is the resolved status of the request.
+      * @param {string} name - This is the name of the request bearer.
+      * @returns {null} - displays or stacks the requests in the div
+      *
+      * @memberOf Render class
+      * @static
+      */
+  static renderRequestDetailsDiv(
+    ElementId, requestTitle, requestType, message, approvedStatus,
+    resolvedStatus, name
+  ) {
+    const divElement = document.getElementById(ElementId);
+    let approvedStatusIndicator, resolvedStatusIndicator,
+      approvedStatusMessage, resolvedStatusMessage;
+    if (approvedStatus === 'pending') {
+      approvedStatusMessage = 'pending';
+      approvedStatusIndicator = 'fa fa-exclamation-circle';
+      resolvedStatusIndicator = 'fa fa-exclamation-circle';
+      resolvedStatusMessage = 'pending';
+    }
+    if (approvedStatus === 'success') {
+      approvedStatusMessage = 'Accepted';
+      approvedStatusIndicator = 'fa fa-check';
+      resolvedStatusIndicator = 'fa fa-exclamation-circle';
+      resolvedStatusMessage = 'pending';
+    }
+
+    if (resolvedStatus === 'success') {
+      approvedStatusMessage = 'Accepted';
+      approvedStatusIndicator = 'fa fa-check';
+      resolvedStatusIndicator = 'fa fa-check';
+      resolvedStatusMessage = 'Resolved';
+    }
+    if (approvedStatus === 'fail') {
+      approvedStatusMessage = 'Rejected';
+      approvedStatusIndicator = 'fa fa-times';
+      resolvedStatusIndicator = 'fa fa-times';
+      resolvedStatusMessage = 'Resolved';
+    }
+    divElement.innerHTML += `<div class = "request-panel">
+    <div class = "request-box">
+        <h2>Request Report</h2>
+        <div>&nbsp</div>
+        <h3>Request Title:  &nbsp ${requestTitle}</h3>
+        <div>&nbsp</div>
+        message:
+        <textarea required readonly ="readonly">${message}</textarea>
+       <div class = "card-new" style ="width: 100%">
+           <div>&nbsp</div>
+           <h4>Request details</h4>
+        <div>&nbsp</div>
+        <ul>
+            <li>Request Bearer: &nbsp ${name}</li>
+            <li>Request Type:  &nbsp ${requestType}</li>
+            <li>Request Approval Status: &nbsp${approvedStatusMessage}  &nbsp <i class= "${approvedStatusIndicator}"></i></li>
+            <li>Request Resolved Status: &nbsp ${resolvedStatusMessage} &nbsp <i class= "${resolvedStatusIndicator}"></i> </li>
+        </ul>
+    </div>
+      
+            <a href ="updaterequest1.html"><button type="submit"> Update Request</button></a>
+      
+</div>
+        </div>`;
+  }
+}

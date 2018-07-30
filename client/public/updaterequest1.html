@@ -18,31 +18,63 @@
                         
                         <nav class="getNav nav-bar-right">
                             <a href="userdashboard1.html"><div class ="nav-bar-link">Home</div></a>
-                                <a href="login1.html"><div class ="nav-bar-link">Login</div></a>
-                                <a href="signup1.html"><div class ="nav-bar-link">Sign out</div></a>
+                                <a href="signup1.html"><div class ="nav-bar-link" id = "signoutButton">Sign out</div></a>
                         </nav>
                         </div>
-                        
+                        <div id = "alert-box">Hello</div>       
         <div class ="main">
+            <div id = "loader" ><img src="images/loading.gif" alt ="loading..."><div id= "loader-text"> ... </div></div>
+            <div class ="header-line" id ="requestDisplay">
+                <div class = "header">
+                    <h2>All requests</h2>
+                </div>
+                <div class = "search-area">
+                    <div class ="search-box"><input type= "searchUpdates" id = "searchText" placeholder="Search requests by title, status or type ... "/></div>
+                    <span id = "refreshButton" class ="search-icon"><i class ="fa fa-refresh"></i></span>
+             
+                </div>
+
+                <div class = "request-container" id = "requestContainer">
+                
+                    
+                 <div class = "request-mother-card " id ="requestMotherCard" style ="position:relative"> 
+                        <div class = "adjust" id ="adjustCard">  
+                
+                        <div id = "loader" ><img src="images/loading.gif" alt ="loading..."><div id= "loader-text"> ... </div></div>
+    
+                <div class ="request-card" id ="requestHeader">
+                    <div class="display-container">
+                        <div class = "pointer  inner-box"><i class="fa fa-map-pin"></i> &nbsp Title</div>
+                        <div class = "inner-box">Status</div>
+                        <div class = "inner-box">View requests</div>
+                    </div>
+                </div>
+               <div id = "requestList">
+               </div>
+                
+                
+            </div>   
+        </div>              
+                </div>
             
-        
+            </div>
             <div class = "request-panel">
-                <div class = "request-box">
+                <div class = "request-box" id = "updateForm">
                     <div><h2>Update Request</h2></div>
-                <form class = "form-one">
+                <form class = "form-one" method = "POST">
         
                     <label for="title"><h4><b>Request title</b></h4></label>
-                    <input type="text" name="title" required>
+                    <input type="text" id = "requestTitleText" name="title" required>
                     <select id= "requestType" name="requestType">
                         <option value= "0">Select Request Type</option>
-                        <option value= "1">Repair</option>
-                        <option value= "2">Maintenance</option>
+                        <option value= "repair">Repair</option>
+                        <option value= "maintenance">Maintenance</option>
                     </select>
                     <div class = "spacing">
                     <label for="requestDescription"><h4><b>Brief Description of fault</b></h4></label>
                     <div>&nbsp</div>
-                    <textarea required ></textarea>
-                    <button type="submit"> Update Request</button>
+                    <textarea required id = "message" ></textarea>
+                    <button  id = "updateButton"> Update Request</button>
                     </div>
                 </form>
             </div>
@@ -54,6 +86,15 @@
                 <p> &copy 2017 Maintenance-Tracker </p>
             </div>
         </div>
-        <script src="./js/ToggleNavBar.js"></script>
+        <script src="./js/src/ToggleNavBar.js"></script>
+        <script type = "text/javascript" src="./js/src/Authenticaton/Authentication.js"></script>
+        <script type = "text/javascript" src ="./js/src/Authenticaton/signout.js"></script>
+        <script type = "text/javascript" src="./js/src/Render.js"></script>
+        
+        <script type = "text/javascript" src="./js/src/Request/Request.js"></script>
+        <script type = "text/javascript" src="./js/src/Request/getRequest.js"></script>
+        <script type = "text/javascript" src="./js/src/Request/getUpdateRequest.js"></script>
+        <script type = "text/javascript" src="./js/src/Request/sortUpdateRequest.js"></script>
+        <script type = "text/javascript" src="./js/src/Request/getARequest.js"></script>
     </body>
     </html>
