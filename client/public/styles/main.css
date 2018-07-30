@@ -59,7 +59,7 @@
 .inner-box {
     padding: 8px 12px;
     font-size: 20px;
-    border-left: 1px solid white;
+    border-left: 1px solid hotpink;
     width: 30%;
     margin-top: 4%
 }
@@ -113,12 +113,11 @@
     color: black;
 }
 .inner-box a:hover {
-    color: white;
-    background-color: hotpink
+    color: hotpink;
 }
 .request-card:hover {
-    color: white;
-    background-color: hotpink;
+
+    border: 1px solid hotpink;
 }
 
 #requestheader {

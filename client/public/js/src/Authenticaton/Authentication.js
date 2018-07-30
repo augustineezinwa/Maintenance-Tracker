@@ -64,7 +64,14 @@ class Authentication {
           window.location.pathname = (name === 'Admin') ? '/admindashboard1.html' : '/userdashboard1.html';
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        Render.renderLoader('loader', 'none', 'loader-text', '');
+        Render.renderDiv('signup-box', 'block');
+        const error = 'Internet Connection Error!';
+        Render.renderAlert('alert-box', 'block', error, 'red');
+        setTimeout(() => (Render.renderAlert('alert-box', 'none', '')), 5000);
+        console.log(err);
+      });
   }
   /**
         * @description -This method authenticates user upon login
@@ -122,7 +129,14 @@ class Authentication {
           window.location.pathname = (name === 'Admin') ? '/admindashboard1.html' : '/userdashboard1.html';
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        Render.renderLoader('loader', 'none', 'loader-text', '');
+        Render.renderDiv('loginBox', 'block');
+        const error = 'Internet Connection Error!';
+        Render.renderAlert('alert-box', 'block', error, 'red');
+        setTimeout(() => (Render.renderAlert('alert-box', 'none', '')), 5000);
+        console.log(err);
+      });
   }
   /**
         * @description -This method signs out user during signout process.

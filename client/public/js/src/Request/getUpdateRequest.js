@@ -1,0 +1,2 @@
+const { getEditableRequest } = Request;
+getEditableRequest();
