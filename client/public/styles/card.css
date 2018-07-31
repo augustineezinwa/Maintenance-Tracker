@@ -75,7 +75,7 @@ ul {
     text-align: center;
     padding-top: 20px;
     padding-bottom: 20px;
-    color: hotpink;
+    color: dodgerblue;
 }
 .make-a-request-icon:hover {
     font-size: 165px;
@@ -118,7 +118,7 @@ ul {
 }
 
 .filter-drop-down-content> ul li:hover   {
-    background-color: hotpink;
+    background-color: dodgerblue;
     color: white;
     cursor: pointer;
     z-index: 3;

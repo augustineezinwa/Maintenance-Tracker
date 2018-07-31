@@ -186,6 +186,9 @@ class Render {
     divElement.style.display = toggleDisplay;
     divElement.style.marginTop = '20%';
     loaderTextElement.innerHTML = loaderText;
+    loaderTextElement.style.color = 'white';
+    loaderTextElement.style.fontSize = '24pt';
+    loaderTextElement.style.textShadow = '2px 2px hotpink';
   }
   /**
       * @description -This method renders the alerts to users on maintenance-tracker.
@@ -280,7 +283,7 @@ class Render {
             <div class = "inner-box"><i style ="
             color: ${statusIndicatorColor}" class="${statusIndicator}">&nbsp</i> ${requestStatus}</div>
             
-  <div class ="inner-box"><a href ="#" key = ${requestId} id = "getRequestButton"><i class="${linkIndicator || 'fa fa-eye'}">&nbsp</i>${updateLink || ' View'}</a></div>
+  <div class ="inner-box"><a onclick = "Request.getARequest(event)" key = ${requestId} id = "getRequestButton"><i class="${linkIndicator || 'fa fa-eye'}">&nbsp</i>${updateLink || ' View'}</a></div>
         </div>
 </div>`;
   }
@@ -356,5 +359,71 @@ class Render {
       
 </div>
         </div>`;
+  }
+  /**
+      * @description -This method renders the summary of all request made by a user
+      *
+      * @param {string} ElementId -This is the html element that displays the request summary
+      * @param {string} approvedRequestNumber -This is the html element that needs to be displayed
+      * @param {string} resolvedRequestNumber -This is the html element that needs to be displayed
+      * @param {string} disapprovedRequestNumber -This is the html element that needs to be displayed
+      * @param {string} pendingRequestNumber -This is the html element that needs to be displayed
+      * @returns {null} - displays or hide divs in the  DOM
+      *
+      * @memberOf Render class
+      * @static
+      */
+  static renderRequestSummary(
+    ElementId,
+    approvedRequestNumber,
+    resolvedRequestNumber,
+    disapprovedRequestNumber,
+    pendingRequestNumber
+  ) {
+    const divElementId = document.getElementById(ElementId);
+    divElementId.innerHTML += `<div class ="request-container"style = "margin-top: 10%; height: 120%">
+    <div class = "request-mother-card" style = "position: relative; ">
+        <div class = "adjust" >
+
+      <div class ="request-card">
+      <div class =" display-container "> &nbsp </div>
+              <div class =" display-container " style = " color: hotpink">
+              <h2 >Search results</h2></div> 
+              <div class =" display-container "> &nbsp</div>
+            </div>
+
+            <div class ="request-card">
+            <div class =" display-container "> &nbsp </div>
+              <div class =" display-container search-text" >
+              <p>You have ${approvedRequestNumber} approved requests</p></div> 
+              <div class =" display-container "> &nbsp </div>
+            </div>
+
+            <div class ="request-card">
+            <div class =" display-container "> &nbsp </div>
+                  <div class =" display-container search-text" >
+                  <p>You have ${disapprovedRequestNumber} disapproved requests</p></div> 
+                  <div class =" display-container "> &nbsp </div>
+                </div>
+
+                <div class ="request-card">
+                <div class =" display-container "> &nbsp </div>
+                      <div class =" display-container search-text" >
+                      <p>You have ${resolvedRequestNumber} resolved requests</p></div> 
+                      <div class =" display-container "> &nbsp </div>
+                    </div>
+
+                    <div class ="request-card">
+                    <div class =" display-container "> &nbsp </div>
+                    <div class =" display-container search-text" >
+                    <p>You have ${pendingRequestNumber} pending requests</p></div> 
+                    <div class =" display-container "> &nbsp </div>
+                    
+                  </div>
+             
+   </div>        
+</div>
+
+</div>`;
   }
 }

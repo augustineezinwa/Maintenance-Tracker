@@ -44,7 +44,7 @@
     text-decoration:underline;
 }
 .background {
-    background-image: url('../images/background.jpeg');
+    background-image: url('../images/index.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     min-height: 100%;
@@ -59,9 +59,18 @@
 .inner-box {
     padding: 8px 12px;
     font-size: 20px;
-    border-left: 1px solid hotpink;
+    border-left: 1px solid dodgerblue;
     width: 30%;
     margin-top: 4%
+}
+.adjust {
+    margin-left: 7%;
+}
+
+#requestSummary {
+    display:none;
+    margin: auto;
+   margin-bottom: 10%;
 }
 @media(max-width: 768px) {
     * {
@@ -79,7 +88,7 @@
     }
     .inner-box {
         width : 100%;
-        border-bottom: 1px solid white;
+        border-left: 1px solid white;
     }
     .header {
         margin-bottom: 10%;
@@ -90,11 +99,11 @@
         text-align: center;
         
     }
+
+    
 }
 
-.adjust {
-    margin-left: 8%;
-}
+
 
 .display-container {
     display : flex;
@@ -104,24 +113,24 @@
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-    margin-top: 2%;
+    margin: 2%;
+    padding: 1%;
 }
 
 
 .inner-box a {
     text-decoration : none;
     color: black;
+    padding: 20%;
+   min-height: 100%;
 }
 .inner-box a:hover {
-    color: hotpink;
+    color: dodgerblue;
 }
-.request-card:hover {
 
-    border: 1px solid hotpink;
-}
 
 #requestheader {
-    background-color: hotpink;
+    background-color: dodgerblue;
     color:white;
     position: sticky;
     top: 0;

@@ -187,20 +187,19 @@ class Request {
                             </div>`;
             Render.renderDiv('requestDisplay', 'block');
             Render.renderAlert('adjustCard', 'block', request);
+            if (window.location.pathname === '/summary.html') Render.renderDiv('requestSummary', 'block');
           } else {
             Render.renderDiv('requestDisplay', 'block');
             localStorage.setItem('requestData', JSON.stringify(data.data));
+            if (window.location.pathname === '/summary.html') return Request.fetchRequestSummary();
             const renderedData = data.data.map(x =>
               Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id));
-            let updateButtons = document.querySelectorAll('#getRequestButton');
-            const addEvents = updateButtons.forEach(x => x.addEventListener('click', Request.getARequest));
+
             if (window.location.pathname === '/updaterequest1.html') {
               const editableRequestData = data.data.filter(x => x.approved === 'pending');
               Render.renderAlert('requestList', 'block', '');
               editableRequestData.forEach(x =>
                 Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Update'));
-              updateButtons = document.querySelectorAll('#getRequestButton');
-              const addEvents = updateButtons.forEach(x => x.addEventListener('click', Request.getARequest));
             }
           }
         })
@@ -241,7 +240,7 @@ class Request {
     const requestId = event.target.attributes[1].value;
     const requestData = JSON.parse(localStorage.getItem('requestData'));
     const particularRequest = requestData.filter(x => +x.id === +requestId);
-    Render.renderAlert('requestDisplay', 'none', '');
+    Render.renderDiv('requestDisplay', 'none');
     if (window.location.pathname === '/allrequest.html') {
       Render.renderDiv('requestDetailsDisplay', 'block');
       const name = localStorage.getItem('name');
@@ -254,15 +253,16 @@ class Request {
         particularRequest[0].resolved,
         name
       );
+    } else {
+      Render.renderDiv('updateForm', 'block');
+      Render.renderValue('requestTitleText', 'block', particularRequest[0].requesttitle);
+      Render.renderValue('requestType', 'block', particularRequest[0].requesttype);
+      Render.renderValue('message', 'block', particularRequest[0].message);
+      updateButton.setAttribute('key', requestId);
+      if (particularRequest[0].approved !== 'pending') updateButton.setAttribute('disabled', true);
     }
-    Render.renderDiv('updateForm', 'block');
-    Render.renderValue('requestTitleText', 'block', particularRequest[0].requesttitle);
-    Render.renderValue('requestType', 'block', particularRequest[0].requesttype);
-    Render.renderValue('message', 'block', particularRequest[0].message);
-    updateButton.setAttribute('key', requestId);
-    if (particularRequest[0].approved !== 'pending') updateButton.setAttribute('disabled', true);
-    console.log(updateButton);
   }
+
 
   /**
           * @description -This method gets all request from the server
@@ -275,11 +275,10 @@ class Request {
           */
   static getEditableRequest() {
     const requestData = JSON.parse(localStorage.getItem('requestData'));
+    if (!requestData) return null;
     const editableRequestData = requestData.filter(x => x.approved === 'pending');
     Render.renderAlert('requestList', 'block', '');
     editableRequestData.forEach(x => Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Update'));
-    const updateButtons = document.querySelectorAll('#getRequestButton');
-    const addEvents = updateButtons.forEach(x => x.addEventListener('click', Request.getARequest));
   }
   /**
           * @description -This method sorts request
@@ -310,8 +309,6 @@ class Request {
     if (sortedRequest.length === 0) { Render.renderAlert('requestList', 'block', NoRequestFound); } else {
       Render.renderAlert('requestList', 'block', '');
       sortedRequest.forEach(x => Render.renderRequestDivs('requestList', x.requesttitle, x[resolved || 'approved'], x.id));
-      const updateButtons = document.querySelectorAll('#getRequestButton');
-      const addEvents = updateButtons.forEach(x => x.addEventListener('click', Request.getARequest));
     }
   }
   /**
@@ -337,8 +334,6 @@ class Request {
     if (searchedEditableRequestData.length === 0) { Render.renderAlert('requestList', 'block', NoRequestFound); } else {
       Render.renderAlert('requestList', 'block', '');
       searchedEditableRequestData.forEach(x => Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Update'));
-      const updateButtons = document.querySelectorAll('#getRequestButton');
-      const addEvents = updateButtons.forEach(x => x.addEventListener('click', Request.getARequest));
     }
   }
   /**
@@ -371,8 +366,6 @@ class Request {
     if (searchedData.length === 0) { Render.renderAlert('requestList', 'block', NoRequestFound); } else {
       Render.renderAlert('requestList', 'block', '');
       searchedData.forEach(x => Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id));
-      const updateButtons = document.querySelectorAll('#getRequestButton');
-      const addEvents = updateButtons.forEach(x => x.addEventListener('click', Request.getARequest));
     }
   }
 
@@ -391,5 +384,33 @@ class Request {
     localStorage.removeItem('requestData');
     Render.renderAlert('requestList', 'block', '');
     Request.getRequest();
+  }
+
+  /**
+          * @description -This method refreshes request
+          *
+          * @param {object} event - This is the event object passed to the method.
+          * @returns {null} -
+          *
+          * @memberOf Request class
+          * @static
+          */
+  static fetchRequestSummary(event) {
+    const requestData = JSON.parse(localStorage.getItem('requestData'));
+    if (!requestData) {
+      Request.getRequest();
+    } else {
+      const filteredApprovedRequestData = requestData.filter(x => x.approved === 'success');
+      const filteredResolvedRequestData = requestData.filter(x => x.resolved === 'success');
+      const filteredRejectedRequestData = requestData.filter(x => x.approved === 'fail');
+      const filteredPendingRequestData = requestData.filter(x => x.approved === 'pending');
+      Render.renderRequestSummary(
+        'requestDisplay',
+        filteredApprovedRequestData.length,
+        filteredResolvedRequestData.length,
+        filteredRejectedRequestData.length,
+        filteredPendingRequestData.length
+      );
+    }
   }
 }
