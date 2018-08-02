@@ -1,0 +1,60 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+    <link rel = "stylesheet" type = "text/css" href = "./styles/nav.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/main.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/card.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/form.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/footer.css">
+    <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Maintenance-Tracker | Search and filter request</title>
+    <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">
+    </head>
+    <body>
+            <div class ="background">
+                    <div class = "nav-bar">
+                            <div class ="nav-bar-brand-logo">Maintenance Tracker &nbsp <i class="fa fa-wrench"></i> </div>
+                             <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
+                                
+                                
+                                <nav class="getNav nav-bar-right">
+                                    <a href="userdashboard1.html"><div class ="nav-bar-link">Home</div></a>
+                                        <a href="#"><div class ="nav-bar-link" id = "signoutButton">Sign out</div></a>
+                                </nav>
+                                </div>
+                        
+        <div class ="main">
+            <div class = "header-line">
+                <div class = "header">
+                    <h2>All Request Summary</h2>
+                </div>
+        <div id = "loader" ><img src="images/loading.gif" alt ="loading..."><div id= "loader-text"> ... </div></div>
+          
+        <div id ="requestDisplay"></div>
+
+        <div class = "request-box" id = "requestSummary"><div id = "adjustCard" ></div></div>
+                
+                   
+                       
+                 
+        
+       
+          
+    </div>
+</div>
+<div class= "footer" style = "text-align: center">
+    <p> &copy 2017 Maintenance-Tracker </p>
+</div>
+</div>
+
+
+        
+        <script src="./js/src/ToggleNavBar.js"></script>
+        <script type = "text/javascript" src="./js/src/Authenticaton/Authentication.js"></script>
+        <script type = "text/javascript" src ="./js/src/Authenticaton/signout.js"></script>
+        <script type = "text/javascript" src="./js/src/Render.js"></script>
+        
+        <script type = "text/javascript" src="./js/src/Request/Request.js"></script>
+        <script type = "text/javascript" src="./js/src/Request/fetchRequestHistory.js"></script>
+    </body>
+    </html>

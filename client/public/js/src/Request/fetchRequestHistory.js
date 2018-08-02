@@ -1,0 +1,2 @@
+const { fetchRequestSummary } = Request;
+fetchRequestSummary();
