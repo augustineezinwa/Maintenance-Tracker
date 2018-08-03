@@ -2,10 +2,10 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import connect from '../connections/connect';
-import { createUserData, findEmail } from '../helper/instructions/userInstructions';
+import { createUserData, findEmail, findUser } from '../helper/instructions/userInstructions';
 import ErrorHandler from '../helper/ErrorHandler';
 
-const { handleTableWriteError } = ErrorHandler;
+const { handleTableWriteError, handleTableReadError } = ErrorHandler;
 
 dotenv.config();
 /**
@@ -92,12 +92,15 @@ class UserController {
             message: 'password is incorrect!'
           }
         });
-      }).catch(err => res.status(404).json({
-        status: 'fail',
-        data: {
-          message: 'you cant login at this time, email doesnt exist'
-        }
-      }));
+      }).catch((err) => {
+        res.status(404).json({
+          status: 'fail',
+          data: {
+            message: 'you cant login at this time, email doesnt exist'
+          }
+        });
+        console.log(err);
+      });
   }
   /**
   * @description -This method checks if a user's season is valid
@@ -119,6 +122,48 @@ class UserController {
         adminStatus: req.admin
       }
     });
+  }
+
+  /**
+  * @description -This method checks get the profile of any user
+  *
+  * @param {object} req - The request payload sent to the router
+  * @param {object} res - The response payload sent back from the controller
+  *
+  * @returns {object} - returns user details to admin
+  *
+  * @description This method fetches user details for the admin.
+  * @memberOf UserController
+  * @static
+  */
+  static getUserProfile(req, res) {
+    connect.query(findUser(req.params.userId))
+      .then((data) => {
+        const {
+          id,
+          email,
+          firstname,
+          lastname
+        } = data.rows[0];
+        if (data.rows.length < 1) {
+          return res.status(404).json({
+            status: 'fail',
+            data: {
+              message: 'user cant be found!'
+            }
+          });
+        }
+        return res.status(200).json({
+          status: 'success',
+          data: {
+            id,
+            firstname,
+            lastname,
+            email
+          }
+        });
+      })
+      .catch(err => handleTableReadError(err, res));
   }
 }
 
