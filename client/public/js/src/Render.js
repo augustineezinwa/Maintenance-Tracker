@@ -270,11 +270,12 @@ class Render {
       */
   static renderRequestDivs(ElementId, requestTitle, requestStatus, requestId, updateLink = '') {
     const divElement = document.getElementById(ElementId);
-    let statusIndicator, statusIndicatorColor, linkIndicator;
+    let statusIndicator, statusIndicatorColor, linkIndicator, callEvent;
     if (requestStatus === 'pending') { statusIndicator = 'fa fa-exclamation-circle'; statusIndicatorColor = 'darkorange'; }
     if (requestStatus === 'success') { requestStatus = 'Approved'; statusIndicator = 'fa fa-check'; statusIndicatorColor = 'green'; }
     if (requestStatus === 'fail') { requestStatus = 'Rejected'; statusIndicator = 'fa fa-times'; statusIndicatorColor = 'darkred'; }
-    if (updateLink) { linkIndicator = 'fa fa-edit'; }
+    if (updateLink === 'Update') { linkIndicator = 'fa fa-edit'; }
+    if (updateLink === 'Review') { linkIndicator = 'fa fa-search'; callEvent = 'Request.getARequestForAdmin(event)'; }
 
     divElement.innerHTML += ` <div class ="request-card ">
     <div class="display-container">
@@ -283,7 +284,7 @@ class Render {
             <div class = "inner-box"><i style ="
             color: ${statusIndicatorColor}" class="${statusIndicator}">&nbsp</i> ${requestStatus}</div>
             
-  <div class ="inner-box"><a onclick = "Request.getARequest(event)" key = ${requestId} id = "getRequestButton"><i class="${linkIndicator || 'fa fa-eye'}">&nbsp</i>${updateLink || ' View'}</a></div>
+  <div class ="inner-box"><a onclick = "${callEvent || 'Request.getARequest(event)'}" key = ${requestId} id = "getRequestButton"><i class="${linkIndicator || 'fa fa-eye'}">&nbsp</i>${updateLink || ' View'}</a></div>
         </div>
 </div>`;
   }
@@ -298,6 +299,7 @@ class Render {
       * @param {string} approvedStatus - This is the approval status of the request
       * @param {string} resolvedStatus -This is the resolved status of the request.
       * @param {string} name - This is the name of the request bearer.
+      * @param {string} requestId - This is id of the request to be displayed
       * @returns {null} - displays or stacks the requests in the div
       *
       * @memberOf Render class
@@ -305,11 +307,11 @@ class Render {
       */
   static renderRequestDetailsDiv(
     ElementId, requestTitle, requestType, message, approvedStatus,
-    resolvedStatus, name
+    resolvedStatus, name, requestId = ''
   ) {
     const divElement = document.getElementById(ElementId);
     let approvedStatusIndicator, resolvedStatusIndicator,
-      approvedStatusMessage, resolvedStatusMessage;
+      approvedStatusMessage, resolvedStatusMessage, renderEmail, renderButtons;
     if (approvedStatus === 'pending') {
       approvedStatusMessage = 'pending';
       approvedStatusIndicator = 'fa fa-exclamation-circle';
@@ -335,6 +337,35 @@ class Render {
       resolvedStatusIndicator = 'fa fa-times';
       resolvedStatusMessage = 'Resolved';
     }
+
+
+    if (requestId && resolvedStatus === 'pending') {
+      renderButtons =
+      `<a href ="#">
+      <button type="resolve" key=${requestId} 
+        onclick= "Request.approveRequest(event)">
+       Resolve Request</button></a>`;
+    }
+    if (requestId && approvedStatus === 'fail' || requestId && resolvedStatus === 'success'
+       || !requestId) {
+      renderButtons =
+      `<a href ="">
+      <button type="approve" key=${requestId} 
+        >
+       Back </button></a>`;
+    }
+
+    if (requestId && approvedStatus === 'pending') {
+      renderButtons =
+      `<a href ="#">
+      <button type="approve" key=${requestId} 
+        onclick= "Request.approveRequest(event)">
+       Aprove Request</button></a>
+       
+       <a href ="#"><button type="disapprove" key =${requestId}
+       onclick = "Request.approveRequest(event)"> 
+       Disapprove Request</button></a>`;
+    }
     divElement.innerHTML += `<div class = "request-panel">
     <div class = "request-box">
         <h2>Request Report</h2>
@@ -348,14 +379,15 @@ class Render {
            <h4>Request details</h4>
         <div>&nbsp</div>
         <ul>
-            <li>Request Bearer: &nbsp ${name}</li>
+            <li>Request Bearer: &nbsp<span id ="getName"> ${name}</span></li>
+            <li id = "getEmail"></li>
             <li>Request Type:  &nbsp ${requestType}</li>
             <li>Request Approval Status: &nbsp${approvedStatusMessage}  &nbsp <i class= "${approvedStatusIndicator}"></i></li>
             <li>Request Resolved Status: &nbsp ${resolvedStatusMessage} &nbsp <i class= "${resolvedStatusIndicator}"></i> </li>
         </ul>
     </div>
-      
-            <a href ="updaterequest1.html"><button type="submit"> Update Request</button></a>
+            ${renderButtons}
+            
       
 </div>
         </div>`;

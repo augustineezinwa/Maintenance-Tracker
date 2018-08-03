@@ -1,0 +1,88 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+    <link rel = "stylesheet" type = "text/css" href = "./styles/nav.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/main.css">
+    <link rel = "stylesheet" type = "text/css" href = "./styles/card.css"> 
+    <link rel = "stylesheet" type = "text/css" href = "./styles/form.css"> 
+    <link rel = "stylesheet" type = "text/css" href = "./styles/footer.css">
+    <link rel = "stylesheet" type = "text/css" href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Maintenance-Tracker | Review requests</title>
+    <meta name = "viewport" content = "width= device-width,initial-scale = 1.0">
+    <script src ="./js/src/Authenticaton/AuthenticateAccess.js"></script>
+    </head>
+    <body>
+            <div class ="background">
+            <div class = "nav-bar">
+                    <div class ="nav-bar-brand-logo">Maintenance Tracker &nbsp <i class="fa fa-wrench"></i> </div>
+                     <div class="nav-bar-icon-toggle"><i class="fa fa-bars"></i></div> 
+                        
+                        
+                        <nav class="getNav nav-bar-right">
+                            <a href="admindashboard1.html"><div class ="nav-bar-link">Home</div></a>
+                                <a href="#"><div class ="nav-bar-link" id = "signoutButton">Sign out</div></a>
+                        </nav>
+                        </div>
+                        <div id = "alert-box">Hello</div>
+        <div class ="main">
+                <div id = "loader" ><img src="images/loading.gif" alt ="loading..."><div id= "loader-text"> ... </div></div>
+            <div class ="header-line" id = "requestDisplay">
+            <div class = "header">
+                <h2>Review requests</h2>
+            </div>
+            <div class = "search-area">
+                <div class ="search-box"><input type= "search" id = "searchText" placeholder="Search requests by title, status or type ... "/></div><span id = "refreshButton" class ="search-icon"><i class ="fa fa-refresh"></i></span><div class = "filter-drop-button">Filter requests &nbsp<i class="fa fa-arrow-down"></i>
+                    <div class ="filter-drop-down-content">
+                      <ul>
+                         <li id = "getApprovedRequestButton">Approved requests</li>
+                          <li id = "getRejectedRequestButton">Disapproved requests</li>
+                          <li id = "getResolvedRequestButton">Resolved requests</li>
+                          <li id = "getPendingRequestButton">Pending requests</li>
+                      </ul>
+                    </div></div>
+            </div>
+            <div class = "request-container" id = "requestContainer">
+            
+                
+             <div class = "request-mother-card " id ="requestMotherCard" style ="position:relative"> 
+                    <div class = "adjust" id ="adjustCard">  
+            
+                  
+
+            <div class ="request-card" id ="requestHeader">
+                <div class="display-container">
+                    <div class = "pointer  inner-box"><i class="fa fa-map-pin"></i> &nbsp Title</div>
+                    <div class = "inner-box">Status</div>
+                    <div class = "inner-box">View requests</div>
+                </div>
+            </div>
+           <div id = "requestList">
+           </div>
+            
+            
+        </div>   
+    </div>              
+            </div>
+        
+        </div>
+        
+        <div id = "requestDetailsDisplay"></div>
+
+        </div>
+    
+
+
+        <div class= "footer">
+                <p> &copy 2017 Maintenance-Tracker </p>
+            </div>
+        </div>
+        <script src="./js/src/ToggleNavBar.js"></script>
+        <script type = "text/javascript" src="./js/src/Authenticaton/Authentication.js"></script>
+        <script type = "text/javascript" src ="./js/src/Authenticaton/signout.js"></script>
+        <script type = "text/javascript" src="./js/src/Render.js"></script>
+        
+        <script type = "text/javascript" src="./js/src/Request/Request.js"></script>
+        <script type = "text/javascript" src="./js/src/Request/getAllRequests.js"></script>
+        <script type = "text/javascript" src="./js/src/Request/sortRequest.js"></script>
+    </body>
+    </html>

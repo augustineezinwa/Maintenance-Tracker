@@ -24,10 +24,19 @@ const findEmail = (email) => {
   };
   return query;
 };
+
+const findUser = (userId) => {
+  const query = {
+    text: 'SELECT * FROM users WHERE users.id = $1',
+    values: [userId]
+  };
+  return query;
+};
+
 const getPrimaryKeyByEmail = email => `SELECT id FROM users WHERE users.email = '${email}';`;
 const getAdminStatusByEmail = email => `SELECT admin FROM users WHERE users.email = '${email}'`;
 
 export {
   createUserTable, destroyUserTable, createUserData, findEmail,
-  getPrimaryKeyByEmail, getAdminStatusByEmail
+  getPrimaryKeyByEmail, getAdminStatusByEmail, findUser
 };

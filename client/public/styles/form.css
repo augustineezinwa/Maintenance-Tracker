@@ -77,6 +77,13 @@ button:hover {
     background-color: dodgerblue;
 }
 
+button[type= 'resolve']:hover {
+    background-color: green;
+}
+
+button[type = 'disapprove']:hover {
+    background-color:red;
+}
 .login-panel {
     display: flex;
     justify-content: center;
@@ -211,7 +218,7 @@ select  {
     }
     .login-box {
         width: 95%;
-       
+       margin-top: 30%;
     
     }
     .request-box {
