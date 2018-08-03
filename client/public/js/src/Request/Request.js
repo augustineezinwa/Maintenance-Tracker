@@ -269,10 +269,16 @@ class Request {
             localStorage.setItem('requestData', JSON.stringify(data.data));
             Render.renderDiv('requestDisplay', 'block');
             Render.renderLoader('loader', 'none', 'loader-text', '');
-            const allRequestData = JSON.parse(localStorage.getItem('requestData'));
+            const requestData = JSON.parse(localStorage.getItem('requestData'));
             if (window.location.pathname === '/adminsummary.html') return Request.fetchRequestSummary();
-            allRequestData.forEach(x => 
+            requestData.forEach(x =>
               Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Review'));
+            if (window.location.pathname === '/pending.html') {
+              const editableRequestData = requestData.filter(x => x.approved === 'pending');
+              Render.renderAlert('requestList', 'block', '');
+              editableRequestData.forEach(x =>
+                Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Review'));
+            }
           }
         }).catch((err) => {
           Render.renderDiv('requestDisplay', 'block');
@@ -489,7 +495,13 @@ class Request {
     if (!requestData) return null;
     const editableRequestData = requestData.filter(x => x.approved === 'pending');
     Render.renderAlert('requestList', 'block', '');
-    editableRequestData.forEach(x => Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Update'));
+    if (window.location.pathname === '/pending.html') {
+      editableRequestData.forEach(x =>
+        Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Review'));
+    } else {
+      editableRequestData.forEach(x =>
+        Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Update'));
+    }
   }
   /**
           * @description -This method sorts request
@@ -519,7 +531,8 @@ class Request {
 
     if (sortedRequest.length === 0) { Render.renderAlert('requestList', 'block', NoRequestFound); } else {
       Render.renderAlert('requestList', 'block', '');
-      if (window.location.pathname === '/review.html') {
+      if (window.location.pathname === '/review.html' ||
+      window.location.pathname === '/pending.html') {
         sortedRequest.forEach(x => Render.renderRequestDivs('requestList', x.requesttitle, x[resolved || 'approved'], x.id, 'Review'));
       } else {
         sortedRequest.forEach(x => Render.renderRequestDivs('requestList', x.requesttitle, x[resolved || 'approved'], x.id));
@@ -549,7 +562,13 @@ class Request {
          </div>`;
     if (searchedEditableRequestData.length === 0) { Render.renderAlert('requestList', 'block', NoRequestFound); } else {
       Render.renderAlert('requestList', 'block', '');
-      searchedEditableRequestData.forEach(x => Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Update'));
+      if (window.location.pathname === '/pending.html') {
+        searchedEditableRequestData.forEach(x =>
+          Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Review'));
+      } else {
+        searchedEditableRequestData.forEach(x =>
+          Render.renderRequestDivs('requestList', x.requesttitle, x.approved, x.id, 'Update'));
+      }
     }
   }
   /**
@@ -602,7 +621,7 @@ class Request {
     event.preventDefault();
     localStorage.removeItem('requestData');
     Render.renderAlert('requestList', 'block', '');
-    if (window.location.pathname === '/review.html') {
+    if (window.location.pathname === '/review.html' || window.location.pathname === '/pending.html') {
       Request.getAllRequests();
     } else {
       Request.getRequest();
@@ -622,12 +641,11 @@ class Request {
   static fetchRequestSummary(event) {
     const requestData = JSON.parse(localStorage.getItem('requestData'));
     if (!requestData) {
-      if(window.location.pathname === '/adminsummary.html') {
+      if (window.location.pathname === '/adminsummary.html') {
         Request.getAllRequests();
       } else {
         Request.getRequest();
       }
-      
     } else {
       const filteredApprovedRequestData = requestData.filter(x => x.approved === 'success');
       const filteredResolvedRequestData = requestData.filter(x => x.resolved === 'success');
